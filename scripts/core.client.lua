@@ -118,7 +118,7 @@ addEventHandler("onClientResourceStart", resourceRoot, function()
 	gui.cb.unit:addItem("Hours");
 	gui.cb.unit:addItem("Days");
 
-	gui.cb.unit:setSelectedItem(1);
+	gui.cb.unit:setSelected(1);
 
 	gui.cb.button.clear = GuiButton(0, 415, 121, 31, "Clear", false, gui.cb.window);
 	if on_cbClearB_clicked then
