@@ -296,16 +296,16 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
     -- local but = dxButton:create(5, 100, 240, 50, "Press me", ts2)
     -- but:setColor(0, 0, 125)
 
-    i = dxTreeView:create(40, 40, 250, 350, "Test TreeView", win2);
-    local p1 = i:addItem("Parent 1");
-        p1:addItem("Child 1 of Parent 1"):addItem("Child 1 of Child 1 of Parent 1"):addItem("Child 1 of Child 1 of Child 1 of Parent 1");
-        p1:addItem("Child 2 of Parent 1");
-        p1:addItem("Child 3 of Parent 1"):addItem("Child 1 of Child 2 of Parent 1");
-    local p2 = i:addItem("Parent 2");
-    p2.color = {255, 0, 0, 200};
-        p2:addItem("Child 1 of Parent 2");
-        local c2p2 = p2:addItem("Child 2 of Parent 2"):addItem("Child 1 of Child 2 of Parent 2");
-        p2:addItem("Child 3 of Parent 2");
+    -- i = dxTreeView:create(40, 40, 250, 350, "Test TreeView", win2);
+    -- local p1 = i:addItem("Parent 1");
+    --     p1:addItem("Child 1 of Parent 1"):addItem("Child 1 of Child 1 of Parent 1"):addItem("Child 1 of Child 1 of Child 1 of Parent 1");
+    --     p1:addItem("Child 2 of Parent 1");
+    --     p1:addItem("Child 3 of Parent 1"):addItem("Child 1 of Child 2 of Parent 1");
+    -- local p2 = i:addItem("Parent 2");
+    -- p2.color = {255, 0, 0, 200};
+    --     p2:addItem("Child 1 of Parent 2");
+    --     local c2p2 = p2:addItem("Child 2 of Parent 2"):addItem("Child 1 of Child 2 of Parent 2");
+    --     p2:addItem("Child 3 of Parent 2");
 end)
 
 bindKey("ralt", "down", function () showCursor(not isCursorShowing()) end)
