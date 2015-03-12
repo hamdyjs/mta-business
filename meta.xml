@@ -3,6 +3,7 @@
 
 	<script src = "scripts/core.server.lua" type = "server" />
 	<script src = "scripts/updatecheck.server.lua" type = "server" />
+	<script src = "scripts/ui.client.lua" type = "client" />
 	<script src = "scripts/core.client.lua" type = "client" />
 	<script src = "scripts/dxoutput.client.lua" type = "client" />
 
