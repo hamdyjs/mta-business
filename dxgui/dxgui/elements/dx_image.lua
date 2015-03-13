@@ -23,6 +23,7 @@ function dxImage:create(x, y, width, height, image, parent)
 	table.insert(dxObjects, self);
 	return self;
 end
+dxImage.new = dxImage.create;
 
 function dxImage:setImage(image)
 	if (not image) then return; end

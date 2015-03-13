@@ -258,16 +258,16 @@ Here you can see an example Window!
 You can move it around, just press F2!
 ]]
 
-addEventHandler("onClientResourceStart", resourceRoot, function ()
-    local win = dxWindow:create(10, 10, 250, 245, "Information", true, true)
-    local win2 = dxWindow:create(500, 100, 500, 400, "window2", true)
-    local but = dxButton:create(5, 190, 240, 50, "Press me. (Alt-Gr)", win)
-    -- local but2 = dxButton:create(5, 190, 240, 50, "Press me. (Alt-Gr)", win2)
-    local text = dxText:create (5, 25, 240, 160, longString:format(getPlayerName(localPlayer)), win)
-    text:setAlignX("center")
-    text:setAlignY("center")
+-- addEventHandler("onClientResourceStart", resourceRoot, function ()
+    -- local win = dxWindow(10, 10, 250, 245, "Information", true, true)
+    -- local win2 = dxWindow(500, 100, 500, 400, "window2", true)
+    -- local but = dxButton(5, 190, 240, 50, "Press me. (Alt-Gr)", win)
+    -- -- local but2 = dxButton(5, 190, 240, 50, "Press me. (Alt-Gr)", win2)
+    -- local text = dxText (5, 25, 240, 160, longString:format(getPlayerName(localPlayer)), win)
+    -- text:setAlignX("center")
+    -- text:setAlignY("center")
 
-    but:setColor(125, 0, 0)
+    -- but:setColor(125, 0, 0)
     -- but2:setColor(125, 0, 0)
     
     --but.func = function (state) if state == "down" then error("1") end end
@@ -296,7 +296,7 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
     -- local but = dxButton:create(5, 100, 240, 50, "Press me", ts2)
     -- but:setColor(0, 0, 125)
 
-    -- i = dxTreeView:create(40, 40, 250, 350, "Test TreeView", win2);
+    -- i = dxTreeView(40, 40, 250, 350, "Test TreeView", win2);
     -- local p1 = i:addItem("Parent 1");
     --     p1:addItem("Child 1 of Parent 1"):addItem("Child 1 of Child 1 of Parent 1"):addItem("Child 1 of Child 1 of Child 1 of Parent 1");
     --     p1:addItem("Child 2 of Parent 1");
@@ -306,6 +306,6 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
     --     p2:addItem("Child 1 of Parent 2");
     --     local c2p2 = p2:addItem("Child 2 of Parent 2"):addItem("Child 1 of Child 2 of Parent 2");
     --     p2:addItem("Child 3 of Parent 2");
-end)
+-- end)
 
 bindKey("ralt", "down", function () showCursor(not isCursorShowing()) end)

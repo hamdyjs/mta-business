@@ -26,6 +26,7 @@ function dxTabPanel:create(x, y, width, height, parent)
 	table.insert(dxObjects, self);
 	return self;
 end
+dxTabPanel.new = dxTabPanel.create;
 
 function dxTabPanel:destroy()
 	for index, tab in pairs(self.tabs) do self.tab:destroy() end
@@ -34,7 +35,7 @@ end
 
 function dxTabPanel:addTab(title)
 	if (not title) then return; end
-	return dxTab:create(title, self);
+	return dxTab(title, self);
 end
 
 function dxTabPanel:removeTab(index)

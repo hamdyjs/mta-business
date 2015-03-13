@@ -25,6 +25,7 @@ function dxButton:create ( x, y, width, height, text, parent )
     table.insert(dxObjects, self)
     return self
 end
+dxButton.new = dxButton.create;
 
 function dxButton:initiateClick (_, state)
     if state == "down" then

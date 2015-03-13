@@ -27,6 +27,7 @@ function dxRadioButton:create ( x, y, width, text, parent )
 	table.insert(dxObjects, self)
     return self
 end
+dxRadioButton.new = dxRadioButton.create;
 
 function dxRadioButton:getSelected ( )
     return self.selected

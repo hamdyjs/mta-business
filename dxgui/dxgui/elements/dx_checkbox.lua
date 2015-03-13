@@ -26,6 +26,7 @@ function dxCheckBox:create ( x, y, width, text, parent )
 	table.insert(dxObjects, self)
     return self
 end
+dxCheckBox.new = dxCheckBox.create;
 
 function dxCheckBox:getSelected ( )
     return self.selected

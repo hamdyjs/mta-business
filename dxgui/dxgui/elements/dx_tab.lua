@@ -18,6 +18,7 @@ function dxTab:create(title, panel)
 	table.insert(dxObjects, self);
 	return self;
 end
+dxTab.new = dxTab.create;
 
 function dxTab:destroy()
 	table.remove(self.panel.tabs, self.id);

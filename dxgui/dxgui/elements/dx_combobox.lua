@@ -33,6 +33,7 @@ function dxComboBox:create ( x, y, width, caption, parent, caption_color )
     table.insert(dxObjects, self);
     return self
 end
+dxComboBox.new = dxComboBox.create;
 
 function dxComboBox:addItem ( text, color )
     if (not text or text == "") then return; end

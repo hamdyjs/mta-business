@@ -37,6 +37,7 @@ function dxEditField:create ( x, y, width, height, text, parent )
     table.insert(dxObjects, self);
     return self
 end
+dxEditField.new = dxEditField.create;
 
 -- function dxEditField:getMax ( )
 --     return self.maxLength

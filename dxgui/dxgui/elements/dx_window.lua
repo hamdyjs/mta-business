@@ -27,6 +27,7 @@ function dxWindow:create ( x, y, width, height, text, movable, post_gui )
     table.insert(dxObjects, self)
     return self
 end
+dxWindow.new = dxWindow.create;
 
 function dxWindow:destroy ( )
 	local idx = table.find(dxObjects, self)

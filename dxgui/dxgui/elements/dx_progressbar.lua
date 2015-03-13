@@ -25,6 +25,7 @@ function dxProgressBar:create(x, y, width, height, parent)
 	table.insert(dxObjects, self);
 	return self;
 end
+dxProgressBar.new = dxProgressBar.create;
 
 function dxProgressBar:getProgress()
 	return self.progress;

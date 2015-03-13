@@ -14,6 +14,7 @@ function dxTreeViewItem:create(text, parent)
 	table.insert(dxObjects, self);
 	return self;
 end
+dxTreeViewItem.new = dxTreeViewItem.create;
 
 function dxTreeViewItem:destroy()
 	for index, item in pairs(self.items) do
@@ -24,5 +25,5 @@ end
 
 function dxTreeViewItem:addItem(text)
 	if (not text) then return; end
-	return dxTreeViewItem:create(text, self);
+	return dxTreeViewItem(text, self);
 end

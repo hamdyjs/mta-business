@@ -28,6 +28,7 @@ function dxText:create ( x, y, width, height, text, parent )
 	table.insert(dxObjects, self)
 	return self
 end
+dxText.new = dxText.create;
 
 function dxText:setAlignX ( alignX )
 	if (not alignX) then return; end
