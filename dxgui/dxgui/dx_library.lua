@@ -193,33 +193,37 @@ function onClick(...)
     local testfunc = function (a, b) if table.find(dxObjects, b) < table.find(dxObjects, a) then return true end end
 
     for k, v in spairs(dxObjects, testfunc) do
-        if v.type == "button" and v.visible then
-            if not Cursor.active then
-                local parent = v.parent
-                if parent then
-                    if parent:isCursorOverRectangle(v.x, v.y, v.width, v.height) then
-                        v:initiateClick(...)
-                        break
-                    end
-                else
-                    if isCursorOverRectangle(v.x, v.y, v.width, v.height) then
-                        v:initiateClick(...)
-                        break
+        local visible = v.visible;
+        if (v.parent) then visible = v.parent.visible and v.visible; end
+        if (visible) then
+            if v.type == "button" then
+                if not Cursor.active then
+                    local parent = v.parent
+                    if parent then
+                        if parent:isCursorOverRectangle(v.x, v.y, v.width, v.height) then
+                            v:initiateClick(...)
+                            break
+                        end
+                    else
+                        if isCursorOverRectangle(v.x, v.y, v.width, v.height) then
+                            v:initiateClick(...)
+                            break
+                        end
                     end
                 end
-            end
-        elseif (v.type == "combobox" and v.visible) then
-            if not Cursor.active then
-                local parent = v.parent
-                if parent then
-                    if parent:isCursorOverRectangle(v.x, v.y, v.width, v.height) then
-                        v:initiateClick(...)
-                        break
-                    end
-                else
-                    if isCursorOverRectangle(v.x, v.y, v.width, v.height) then
-                        v:initiateClick(...)
-                        break
+            elseif (v.type == "combobox") then
+                if not Cursor.active then
+                    local parent = v.parent
+                    if parent then
+                        if parent:isCursorOverRectangle(v.x, v.y, v.width, v.height) then
+                            v:initiateClick(...)
+                            break
+                        end
+                    else
+                        if isCursorOverRectangle(v.x, v.y, v.width, v.height) then
+                            v:initiateClick(...)
+                            break
+                        end
                     end
                 end
             end
@@ -258,7 +262,7 @@ Here you can see an example Window!
 You can move it around, just press F2!
 ]]
 
--- addEventHandler("onClientResourceStart", resourceRoot, function ()
+addEventHandler("onClientResourceStart", resourceRoot, function ()
     -- local win = dxWindow(10, 10, 250, 245, "Information", true, true)
     -- local win2 = dxWindow(500, 100, 500, 400, "window2", true)
     -- local but = dxButton(5, 190, 240, 50, "Press me. (Alt-Gr)", win)
@@ -306,6 +310,6 @@ You can move it around, just press F2!
     --     p2:addItem("Child 1 of Parent 2");
     --     local c2p2 = p2:addItem("Child 2 of Parent 2"):addItem("Child 1 of Child 2 of Parent 2");
     --     p2:addItem("Child 3 of Parent 2");
--- end)
+end)
 
 bindKey("ralt", "down", function () showCursor(not isCursorShowing()) end)

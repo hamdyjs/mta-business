@@ -59,6 +59,7 @@ function dxTabPanel:draw()
 		dxDrawBorder(self.x, self.y + tab_height, self.width, self.height - tab_height);
 
 		for index, tab in pairs(self.tabs) do
+			if (dxGetTextWidth(tab.title) > tab_width) then tab_width = dxGetTextWidth(tab.title) + 20; end
 			local r, g, b, a = unpack(self.color);
 		    local x = self.x + (tab_width * (index - 1));
 		    if (isCursorShowing() and (not Cursor.active) and (self.parent and self.parent:isCursorOverRectangle(x, self.y, tab_width, tab_height) or isCursorOverRectangle(x, self.y, tab_width, tab_height))) then

@@ -21,16 +21,17 @@ function dxEditField:create ( x, y, width, height, text, parent )
     self.visible = true;
     self.render = true;
 
+    self.edit = GuiEdit(x, y, width, height, text, false);
+    self.edit:setAlpha(0);
+    self.edit:setProperty("AlwaysOnTop", "true");
+
     if (parent) then
         self.parent = parent;
         self.render = false;
         table.insert(parent.children, self);
         x, y = parent.x + x, parent.y + y;
+        self.edit.visible = parent.visible;
     end
-
-    self.edit = GuiEdit(x, y, width, height, text, false);
-    self.edit:setAlpha(0);
-    self.edit:setProperty("AlwaysOnTop", "true");
 
     addEventHandler("onClientGUIChanged", self.edit, function() _checkForWidth(self); end, false);
 
@@ -83,7 +84,7 @@ end
 function dxEditField:draw()
     if (self.visible) then
         dxDrawRectangle(self.x, self.y, self.width, self.height, tocolor(unpack(self.color)));
-        dxDrawText(self.edit.text, self.x + 8.5, self.y + 14, self.x + self.width - 8.5, self.y + self.height - 10, tocolor(unpack(self.textcolor)), 1.0, "default", "left", "center", true, false, false);
+        dxDrawText(self.edit.text, self.x + 8.5, self.y, self.x + self.width - 8.5, self.y + self.height, tocolor(unpack(self.textcolor)), 1.0, "default", "left", "center", true, false, false);
         
         -- Selection highlight
         local selection_start, selection_length = tonumber(self.edit:getProperty("SelectionStart")), tonumber(self.edit:getProperty("SelectionLength"));

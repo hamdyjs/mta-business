@@ -86,6 +86,15 @@ function dxWindow:isCursorOverRectangle ( x, y, w, h )
 	end
 end
 
+--TODO: Nasty workaround, perhaps a different way to do this?
+function dxWindow:setVisible(visible)
+    for index, element in pairs(self.children) do
+        if (element.type == "editfield") then
+            element.edit.visible = visible;
+        end
+    end
+    dxGUI.setVisible(self);
+end
 
 function dxWindow:draw ( )
     dxSetRenderTarget(self.m.renderTarget, true)
@@ -94,10 +103,17 @@ function dxWindow:draw ( )
             dxDrawRectangle (0, 0, self.width, 20, tocolor(unpack(self.titlecolor)), false)
             dxDrawText (self.text, 0, 0, 0 + self.width, 20, self.textcolor, 1, self.font, "center", "center", true, false, false)
 			
+            --TODO: Add priority to each element
+            local comboboxes = {};
             for i, v in ipairs(self.children or {}) do -- draw all children on the rendertarget
                 if v.visible then
-                    v:draw()
+                    if v.type ~= "combobox" then v:draw()
+                    else table.insert(comboboxes, v); end
+                elseif (type == "editfield" and v.edit.visible) then v.edit.visible = false;
                 end
+            end
+            for i, v in ipairs(comboboxes) do
+                v:draw();
             end
         dxSetBlendMode("blend")
         dxSetRenderTarget()

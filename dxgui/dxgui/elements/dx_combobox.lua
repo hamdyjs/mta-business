@@ -50,7 +50,9 @@ function dxComboBox:clear ( )
 end
 
 function dxComboBox:getItemText ( index )
-    if (not index or not self.items[index]) then return; end
+    if (not index) then return; end
+    if (index == 0) then return self.caption or nil;
+    elseif (not self.items[index]) then return; end
     return self.items[index][1]
 end
 
@@ -91,7 +93,7 @@ function dxComboBox:draw()
     else
         text, text_color = unpack(self.items[self.selected]);
     end
-    dxDrawText(text, self.x + 1, self.y + 4, self.width - 1, self.y + self.height - 4, tocolor(unpack(text_color)), 1.0, "left", "center");
+    dxDrawText(text, self.x + 1, self.y + 4, self.x + self.width - 1, self.y + self.height - 4, tocolor(unpack(text_color)), 1.0, "left", "center");
 
     if (self.active) then
         for index, item in pairs(self.items) do
@@ -108,7 +110,7 @@ function dxComboBox:draw()
             end
             if (self.selected == index) then a = 255; end
             dxDrawRectangle(self.x, y, self.width, self.height, tocolor(r, g, b, a));
-            dxDrawText(text, self.x + 1, y + 4, self.width - 1, y + self.height - 4, tocolor(unpack(text_color)), 1.0, "left", "center");
+            dxDrawText(text, self.x + 1, y + 4, self.x + self.width - 1, y + self.height - 4, tocolor(unpack(text_color)), 1.0, "left", "center");
         end
     end
     if (not getKeyState("mouse1")) then _clicked = false; end
