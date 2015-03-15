@@ -71,3 +71,66 @@ addEventHandler("onClientResourceStart", resourceRoot, function()
 		gui.cb.button.clear:setColor(125, 0, 0);
 		gui.cb.button.cancel:setColor(125, 0, 0);
 		gui.cb.button.create:setColor(125, 0, 0);
+
+	-- Business Window
+	gui.b = {label = {}, tab = {}, edit = {}, button = {}};
+
+	local width, height = 524, 300;
+	local x = screen_width/2 - width/2;
+	local y = screen_height/2 - height/2;
+
+	gui.b.window = dxWindow(x, y, width, height, "Business Name", false);
+		gui.b.window:setVisible(false);
+		gui.b.window:setTitleColor(125, 0, 0);
+
+	gui.b.tab_panel = dxTabPanel(5, 50, 511, 231, gui.b.window);
+
+	gui.b.tab.info = dxTab("Information", gui.b.tab_panel);
+
+	gui.b.label.id = dxText(10, 20, 81, 16, "ID: #", gui.b.tab.info);
+	gui.b.label.name = dxText(10, 70, 241, 16, "Name:", gui.b.tab.info);
+	gui.b.label.owner = dxText(10, 120, 231, 16, "Owner: ", gui.b.tab.info);
+	gui.b.label.cost = dxText(10, 170, 191, 16, "Cost: ", gui.b.tab.info);
+	gui.b.label.payout = dxText(290, 20, 211, 16, "Payout: ", gui.b.tab.info);
+	gui.b.label.payout_time = dxText(290, 70, 211, 16, "Payout Time:", gui.b.tab.info);
+	gui.b.label.location = dxText(290, 120, 211, 16, "Location:", gui.b.tab.info);
+	gui.b.label.bank = dxText(290, 170, 211, 16, "Bank:", gui.b.tab.info);
+		gui.b.label.id:setAlignX("left", false);
+		gui.b.label.id:setAlignY("center");
+		gui.b.label.name:setAlignX("left", false);
+		gui.b.label.name:setAlignY("center");
+		gui.b.label.owner:setAlignX("left", false);
+		gui.b.label.owner:setAlignY("center");
+		gui.b.label.cost:setAlignX("left", false);
+		gui.b.label.cost:setAlignY("center");
+		gui.b.label.payout:setAlignX("left", false);
+		gui.b.label.payout:setAlignY("center");
+		gui.b.label.payout_time:setAlignX("left", false);
+		gui.b.label.payout_time:setAlignY("center");
+		gui.b.label.location:setAlignX("left", false);
+		gui.b.label.location:setAlignY("center");
+		gui.b.label.bank:setAlignX("left", false);
+		gui.b.label.bank:setAlignY("center");
+
+	gui.b.tab.action = dxTab("Actions", gui.b.tab_panel);
+
+	gui.b.button.buy = dxButton(10, 10, 101, 31, "Buy", gui.b.tab.action);
+	gui.b.button.sell = dxButton(10, 60, 101, 31, "Sell", gui.b.tab.action);
+	gui.b.button.deposit = dxButton(10, 110, 101, 31, "Deposit", gui.b.tab.action);
+	gui.b.button.withdraw = dxButton(10, 160, 101, 31, "Withdraw", gui.b.tab.action);
+	gui.b.button.set_name = dxButton(390, 10, 101, 31, "Set Name", gui.b.tab.action);
+	gui.b.button.set_owner = dxButton(390, 60, 101, 31, "Set Owner", gui.b.tab.action);
+	gui.b.button.cost = dxButton(390, 110, 101, 31, "Set Cost", gui.b.tab.action);
+	gui.b.button.set_bank = dxButton(390, 160, 101, 31, "Set Bank", gui.b.tab.action);
+
+	gui.b.edit.action = dxEditField(130, 50, 241, 31, "", gui.b.tab.action);
+
+	gui.b.label.action = dxText(130, 10, 241, 21, "Action:", gui.b.tab.action);
+		gui.b.label.action:setAlignX("center", false);
+		gui.b.label.action:setAlignY("center");
+		gui.b.label.action:setColor(255, 0, 0);
+
+	gui.b.button.accept = dxButton(130, 100, 241, 41, "Accept", gui.b.tab.action);
+	gui.b.button.destroy = dxButton(130, 155, 241, 41, "Destroy", gui.b.tab.action);
+	gui.b.button.x = dxButton(480, 25, 31, 31, "X", gui.b.window);
+end);
