@@ -10,7 +10,7 @@ function dxEditField:create ( x, y, width, height, text, parent )
     self.y = y
     self.width = width
     self.height = height
-    -- self.text = text or ""
+    self.text = text or "";
     self._old_text = text or "";
     self.textcolor = {0, 0, 0, 255};
     self.color = {255, 255, 255, 200};
@@ -70,14 +70,17 @@ function dxEditField:getText()
 end
 
 function dxEditField:setText(text)
+    self.text = text;
     return self.edit:setText(text or "");
 end
 
 function _checkForWidth(self)
     if (dxGetTextWidth(self.edit:getText()) > (self.width - 25)) then
         self.edit:setText(self._old_text);
+        self.text = self._old_text;
     else
         self._old_text = self.edit:getText();
+        self.text = self._old_text;
     end
 end
 
