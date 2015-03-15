@@ -9,13 +9,13 @@ addEventHandler("onClientResourceStart", resourceRoot, function()
 	local x, y = math.floor((screen_width / 2) - (width / 2)), math.floor(screen_height/2 - height/2);
 
 	gui.cb.window = dxWindow(x, y, width, height, "Create Business");
-		gui.cb.window:setVisible(false);
+		gui.cb.window.visible = false;
 
 	gui.cb.text.info = dxText(0, 25, 511, 51, "Pickup the coordinates and enter the data to create the business", gui.cb.window);
 	gui.cb.text.posx = dxText(10, 75, 101, 20, "Position X", gui.cb.window);
 	gui.cb.text.posy = dxText(140, 75, 101, 20, "Position Y", gui.cb.window);
 	gui.cb.text.posz = dxText(270, 75, 101, 20, "Position Z", gui.cb.window);
-	gui.cb.text.intdim = dxText(400, 75, 101, 20, "Interior, Dim", gui.cb.window);
+	gui.cb.text.intdim = dxText(400, 75, 101, 20, "Interior,Dimension", gui.cb.window);
 		gui.cb.text.info:setAlignX("center");
 		gui.cb.text.info:setAlignY("center");
 		gui.cb.text.info:setColor(0, 173, 0);
@@ -72,6 +72,57 @@ addEventHandler("onClientResourceStart", resourceRoot, function()
 		gui.cb.button.cancel:setColor(125, 0, 0);
 		gui.cb.button.create:setColor(125, 0, 0);
 
+	gui.cb.button.pickup.func = function(state)
+		if (state ~= "up") then return; end
+		local pos = localPlayer.position;
+		local int = localPlayer.interior;
+		local dim = localPlayer.dimension;
+		local x, y, z = string.format("%.2f", pos.x), string.format("%.2f", pos.y), string.format("%.2f", pos.z);
+		gui.cb.edit.posx.text = x;
+		gui.cb.edit.posy.text = y;
+		gui.cb.edit.posz.text = z;
+		gui.cb.edit.intdim.text = int..","..dim;
+	end
+
+	gui.cb.button.clear.func = function(state)
+		if (state ~= "up") then return; end
+		gui.cb.edit.posx.text = "";
+		gui.cb.edit.posy.text = "";
+		gui.cb.edit.posz.text = "";
+		gui.cb.edit.intdim.text = "";
+		gui.cb.edit.name.text = "";
+		gui.cb.edit.cost.text = "";
+		gui.cb.edit.payout.text = "";
+		gui.cb.edit.payout_time.text = "";
+		gui.cb.unit:setSelected(2);
+	end
+
+	gui.cb.button.cancel.func = function(state)
+		if (state ~= "up") then return; end
+		gui.cb.window:setVisible(false);
+	end
+
+	gui.cb.button.create.func = function(state)
+		if (state ~= "up") then return; end
+		local posX, posY, posZ, intDim = gui.cb.edit.posx.text, gui.cb.edit.posy.text, gui.cb.edit.posz.text, gui.cb.edit.intdim.text;
+		local name = gui.cb.edit.name.text;
+		local cost = gui.cb.edit.cost.text;
+		local payout = gui.cb.edit.payout.text;
+		local payoutTime = gui.cb.edit.payout_time.text;
+		local payoutUnit = gui.cb.unit:getItemText(gui.cb.unit:getSelected());
+		if posX ~= "" and name ~= "" and cost ~= ""  and tonumber(cost) ~= nil and payout ~= "" and tonumber(payout) ~= nil and payoutTime ~= "" and tonumber(payoutTime) ~= nil and tonumber(payoutTime) > 0 and tonumber(cost) > 0 and tonumber(payout) > 0 then
+			if #name > 30 then outputMessage("BUSINESS: Business name must not be more than 30 characters", 255, 0, 0); return; end
+			local zone = getZoneName(tonumber(posX), tonumber(posY), tonumber(posZ), false);
+			if zone == "Unknown" then gui.cbc.edit.location.text = "the middle of no where" end;
+			gui.cbc.edit.cost.text = name;
+			local interior = tonumber(gettok(intDim, 1, ","));
+			local dimension = tonumber(gettok(intDim, 2, ","));
+			dxCreatePrompt("Are you sure you want to create business '"..name.."' in "..zone, createBusiness);
+		else
+			outputMessage("BUSINESS: The data isn't correct, please correct it", 255, 0, 0);
+		end
+	end
+
 	-- Business Window
 	gui.b = {label = {}, tab = {}, edit = {}, button = {}};
 
@@ -80,7 +131,7 @@ addEventHandler("onClientResourceStart", resourceRoot, function()
 	local y = screen_height/2 - height/2;
 
 	gui.b.window = dxWindow(x, y, width, height, "Business Name", false);
-		gui.b.window:setVisible(false);
+		gui.b.window.visible = false;
 		gui.b.window:setTitleColor(125, 0, 0);
 
 	gui.b.tab_panel = dxTabPanel(5, 50, 511, 231, gui.b.window);
@@ -134,3 +185,32 @@ addEventHandler("onClientResourceStart", resourceRoot, function()
 	gui.b.button.destroy = dxButton(130, 155, 241, 41, "Destroy", gui.b.tab.action);
 	gui.b.button.x = dxButton(480, 25, 31, 31, "X", gui.b.window);
 end);
+
+function createBusiness()
+	Sound("files/cash.mp3", false);
+	gui.cb.window.visible = false;
+	showCursor(false);
+	gui.cb.button.clear("left", "up");
+	local posX, posY, posZ, interior, dimension = gettok(gui.cbc.edit.position.text, 1, ","), gettok(gui.cbc.edit.position.text, 2, ","), gettok(gui.cbc.edit.position.text, 3, ","), gettok(gui.cbc.edit.position.text, 4, ","), gettok(gui.cbc.edit.position.text, 5, ",");
+	local name = gui.cbc.edit.cost.text;
+	local cost = gui.cbc.edit.cost.text;
+	local payout = gui.cbc.edit.payout.text;
+	local payoutTime, payoutUnit = gettok(gui.cbc.edit.payout_time.text, 1, " "), gettok(gui.cbc.edit.payout_time.text, 2, " ");
+	triggerServerEvent("business.server.createBusiness", root, posX, posY, posZ, interior, dimension, name, cost, payout, payoutTime, payoutUnit);
+	addEventHandler("onClientRender", root, fillP);
+end
+
+-- gui.cb.button.pickup.func = function(button, state)
+-- 	if (button ~= "left" or state ~= "up") then return; end
+	
+-- end
+
+-- gui.cb.button.pickup.func = function(button, state)
+-- 	if (button ~= "left" or state ~= "up") then return; end
+	
+-- end
+
+-- gui.cb.button.pickup.func = function(button, state)
+-- 	if (button ~= "left" or state ~= "up") then return; end
+	
+-- end
