@@ -1,16 +1,30 @@
 dxEditField = class ( 'dxEditField', dxGUI )
+local mt = getmetatable(dxEditField);
+mt.__index = function(self, key)
+    if (key == "text") then
+        return rawget(self, "edit").text;
+    else
+        return rawget(dxEditField, key);
+    end
+end;
+mt.__newindex = function(self, key, value)
+    if (key == "text") then
+        self.edit:setText(value);
+    else
+        rawset(self, key, value);
+    end
+end;
 
 --TODO: masked
 
 function dxEditField:create ( x, y, width, height, text, parent )
     if not (x and y and width and height) then return; end
-    local self = setmetatable({}, {__index = self});
+    local self = setmetatable({}, mt);
     self.type = "editfield"
     self.x = x
     self.y = y
     self.width = width
     self.height = height
-    self.text = text or "";
     self._old_text = text or "";
     self.textcolor = {0, 0, 0, 255};
     self.color = {255, 255, 255, 200};
@@ -29,7 +43,7 @@ function dxEditField:create ( x, y, width, height, text, parent )
         self.parent = parent;
         self.render = false;
         table.insert(parent.children, self);
-        x, y = parent.x + x, parent.y + y;
+        self.edit:setPosition(parent.x + x, parent.y + y, false);
         self.edit.visible = parent.visible;
     end
 
@@ -70,17 +84,14 @@ function dxEditField:getText()
 end
 
 function dxEditField:setText(text)
-    self.text = text;
     return self.edit:setText(text or "");
 end
 
 function _checkForWidth(self)
     if (dxGetTextWidth(self.edit:getText()) > (self.width - 25)) then
         self.edit:setText(self._old_text);
-        self.text = self._old_text;
     else
         self._old_text = self.edit:getText();
-        self.text = self._old_text;
     end
 end
 

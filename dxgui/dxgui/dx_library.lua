@@ -177,6 +177,32 @@ function dxGUI:setVisible ( visible )
     end
 end
 
+function dxCreatePrompt(message, ycallback, ncallback)
+    if not (message and type(ycallback) == "function") then return; end
+    local screen_width, screen_height = GuiElement.getScreenSize();
+    showCursor(true)
+    local window = dxWindow((screen_width - 300) / 2, (screen_height - 200) / 2, 300, 200, "Confirmation");
+    local label = dxText(10, 20, 280, 150, message, window);
+        label:setAlignX("center");
+        label:setAlignY("center");
+        label:setWordbreak(true);
+    local y = dxButton(5, 160, 137.5, 30, "Yes", window);
+    local n = dxButton(152.5, 160, 140, 30, "No", window);
+    y.func = function(button, state)
+        if (button ~= "left" or state ~= "up") then return; end
+        showCursor(false);
+        window:destroy();
+        return ycallback();
+    end
+    n.func = function(button, state)
+        if (button ~= "left" or state ~= "up") then return; end
+        showCursor(false);
+        window:destroy();
+        return ncallback and ncallback() or nil;
+    end
+    return window;
+end
+
 --Drawing functions
 function clientRender()
 	dxMovable:render()
@@ -194,7 +220,10 @@ function onClick(...)
 
     for k, v in spairs(dxObjects, testfunc) do
         local visible = v.visible;
-        if (v.parent) then visible = v.parent.visible and v.visible; end
+        if (v.parent) then
+            if (v.parent.type == "window") then visible = v.parent.visible and v.visible;
+            elseif (v.parent.type == "tab") then visible = v.parent.panel.selected == v.parent.id and v.visible; end
+        end
         if (visible) then
             if v.type == "button" then
                 if not Cursor.active then

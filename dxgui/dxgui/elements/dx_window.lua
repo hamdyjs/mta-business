@@ -1,8 +1,23 @@
-dxWindow = class ( 'dxWindow', dxGUI )
+dxWindow = class("dxWindow", dxGUI);
+local mt = getmetatable(dxWindow);
+mt.__index = function(self, key)
+    if (key == "visible") then
+        return rawget(self, "_visible");
+    else
+        return rawget(dxWindow, key);
+    end
+end    
+mt.__newindex = function(self, key, value)
+    if (key == "visible") then
+        self:setVisible(value);
+    else
+        rawset(self, key, value);
+    end
+end
 
 function dxWindow:create ( x, y, width, height, text, movable, post_gui )
     if not (x and y and width and height) then return; end
-    local self = setmetatable({}, {__index = self})
+    local self = setmetatable({}, mt)
     self.type = "window"
     self.text = text or "";
     self.x = x
@@ -13,7 +28,7 @@ function dxWindow:create ( x, y, width, height, text, movable, post_gui )
     self.post_gui = post_gui;
     self.render = true
     self.sizable = true
-    self.visible = true
+    self._visible = true
     self.color = {31, 31, 31, 220}
     self.titlecolor = {81, 156, 14, 200}
 	
@@ -93,7 +108,8 @@ function dxWindow:setVisible(visible)
             element.edit.visible = visible;
         end
     end
-    dxGUI.setVisible(self);
+    self._visible = visible;
+    if (self.m) then self.m.movable = visible; end
 end
 
 function dxWindow:draw ( )
