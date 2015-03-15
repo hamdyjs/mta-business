@@ -177,7 +177,7 @@ function dxGUI:setVisible ( visible )
     end
 end
 
-function dxCreatePrompt(message, ycallback, ncallback)
+function dxPrompt(message, ycallback, ncallback)
     if not (message and type(ycallback) == "function") then return; end
     local screen_width, screen_height = GuiElement.getScreenSize();
     showCursor(true)
@@ -188,14 +188,16 @@ function dxCreatePrompt(message, ycallback, ncallback)
         label:setWordbreak(true);
     local y = dxButton(5, 160, 137.5, 30, "Yes", window);
     local n = dxButton(152.5, 160, 140, 30, "No", window);
-    y.func = function(button, state)
-        if (button ~= "left" or state ~= "up") then return; end
+        y:setColor(125, 0, 0);
+        n:setColor(125, 0, 0);
+    y.func = function(state)
+        if (state ~= "up") then return; end
         showCursor(false);
         window:destroy();
         return ycallback();
     end
-    n.func = function(button, state)
-        if (button ~= "left" or state ~= "up") then return; end
+    n.func = function(state)
+        if (state ~= "up") then return; end
         showCursor(false);
         window:destroy();
         return ncallback and ncallback() or nil;

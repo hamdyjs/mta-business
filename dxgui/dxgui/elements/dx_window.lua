@@ -49,7 +49,7 @@ function dxWindow:destroy ( )
 	if idx then
 		table.remove(dxObjects, idx)
 	end
-	if self.m then
+	if isElement(self.m) then
 		self.m:destroyElement()
 	end
 	if table.getn(self.children) > 0 then
