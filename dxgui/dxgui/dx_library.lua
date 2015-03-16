@@ -221,39 +221,41 @@ function onClick(...)
     local testfunc = function (a, b) if table.find(dxObjects, b) < table.find(dxObjects, a) then return true end end
 
     for k, v in spairs(dxObjects, testfunc) do
-        local visible = v.visible;
-        if (v.parent) then
-            if (v.parent.type == "window") then visible = v.parent.visible and v.visible;
-            elseif (v.parent.type == "tab") then visible = v.parent.panel.selected == v.parent.id and v.visible; end
-        end
-        if (visible) then
-            if v.type == "button" then
-                if not Cursor.active then
-                    local parent = v.parent
-                    if parent then
-                        if parent:isCursorOverRectangle(v.x, v.y, v.width, v.height) then
-                            v:initiateClick(...)
-                            break
-                        end
-                    else
-                        if isCursorOverRectangle(v.x, v.y, v.width, v.height) then
-                            v:initiateClick(...)
-                            break
+        if (self.enabled) then
+            local visible = v.visible;
+            if (v.parent) then
+                if (v.parent.type == "window") then visible = v.parent.visible and v.visible;
+                elseif (v.parent.type == "tab") then visible = v.parent.panel.selected == v.parent.id and v.visible; end
+            end
+            if (visible) then
+                if v.type == "button" then
+                    if not Cursor.active then
+                        local parent = v.parent
+                        if parent then
+                            if parent:isCursorOverRectangle(v.x, v.y, v.width, v.height) then
+                                v:initiateClick(...)
+                                break
+                            end
+                        else
+                            if isCursorOverRectangle(v.x, v.y, v.width, v.height) then
+                                v:initiateClick(...)
+                                break
+                            end
                         end
                     end
-                end
-            elseif (v.type == "combobox") then
-                if not Cursor.active then
-                    local parent = v.parent
-                    if parent then
-                        if parent:isCursorOverRectangle(v.x, v.y, v.width, v.height) then
-                            v:initiateClick(...)
-                            break
-                        end
-                    else
-                        if isCursorOverRectangle(v.x, v.y, v.width, v.height) then
-                            v:initiateClick(...)
-                            break
+                elseif (v.type == "combobox") then
+                    if not Cursor.active then
+                        local parent = v.parent
+                        if parent then
+                            if parent:isCursorOverRectangle(v.x, v.y, v.width, v.height) then
+                                v:initiateClick(...)
+                                break
+                            end
+                        else
+                            if isCursorOverRectangle(v.x, v.y, v.width, v.height) then
+                                v:initiateClick(...)
+                                break
+                            end
                         end
                     end
                 end

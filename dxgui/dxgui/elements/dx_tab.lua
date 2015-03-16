@@ -11,6 +11,7 @@ function dxTab:create(title, panel)
 	self.panel = panel;
 	self.x = panel.x;
 	self.y = panel.y
+	self.enabled = true;
 	self.visible = true;
 	self.color = {255, 255, 255, 255};
 	-- self.visible = true;

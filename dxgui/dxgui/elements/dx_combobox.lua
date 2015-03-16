@@ -16,6 +16,7 @@ function dxComboBox:create ( x, y, width, caption, parent, caption_color )
     self.caption_color = caption_color or {255, 255, 255, 255};
     self.selected = 1
     self.active = false
+    self.enabled = true;
     self.visible = true;
     self.render = true;
 
@@ -82,7 +83,7 @@ end
 
 function dxComboBox:draw()
     local r, g, b, a = unpack(self.color);
-    if not self.active and isCursorShowing() and (not Cursor.active) and (self.parent and self.parent:isCursorOverRectangle(self.x, self.y, self.width, self.height) or isCursorOverRectangle(self.x, self.y, self.width, self.height)) then
+    if self.enabled and not self.active and isCursorShowing() and (not Cursor.active) and (self.parent and self.parent:isCursorOverRectangle(self.x, self.y, self.width, self.height) or isCursorOverRectangle(self.x, self.y, self.width, self.height)) then
         a = 255
     end
     dxDrawRectangle(self.x, self.y, self.width, self.height, tocolor(r, g, b, a));
@@ -101,7 +102,7 @@ function dxComboBox:draw()
             local r, g, b, a = unpack(self.color);
             a = 200;
             local y = self.y + (self.height * index);
-            if isCursorShowing() and (not Cursor.active) and (self.parent and self.parent:isCursorOverRectangle(self.x, y, self.width, self.height) or isCursorOverRectangle(self.x, y, self.width, self.height)) then
+            if self.enabled and isCursorShowing() and (not Cursor.active) and (self.parent and self.parent:isCursorOverRectangle(self.x, y, self.width, self.height) or isCursorOverRectangle(self.x, y, self.width, self.height)) then
                 a = 255
                 if (getKeyState("mouse1") and not _clicked) then
                     _clicked = true;

@@ -12,6 +12,7 @@ function dxButton:create ( x, y, width, height, text, parent )
     self.font = "default"
     self.textcolor = {255, 255, 255, 200}
     self.color = {0, 0, 0, 255}
+    self.enabled = true;
     self.visible = true
     self.render = true
     self.func = function (state) if state == "down" then error("[WARNING] This Button has no function!") end end
@@ -43,14 +44,14 @@ function dxButton:draw ( )
         local x, y, w, h = self.x, self.y, self.x + self.width, self.y + self.height
         if parent then
             --x, y, w, h = self.x, self.y, self.x + self.width, self.y + self.height
-            if isCursorShowing() and (not Cursor.active) and parent:isCursorOverRectangle(self.x, self.y, self.width, self.height) then
+            if isCursorShowing() and (not Cursor.active) and parent:isCursorOverRectangle(self.x, self.y, self.width, self.height) and self.enabled then
                 dxDrawRectangle(x, y, self.width, self.height, tocolor(self.color[1] + 25, self.color[2] + 25, self.color[3] + 25, self.color[4]), false)
             else
                 dxDrawRectangle(x, y, self.width, self.height, tocolor(unpack(self.color)), false)
             end
         else
             --x, y, w, h = self.x, self.y, self.x + self.width, self.y + self.height
-            if isCursorShowing() and (not Cursor.active) and isCursorOverRectangle(self.x, self.y, self.width, self.height) then
+            if isCursorShowing() and (not Cursor.active) and isCursorOverRectangle(self.x, self.y, self.width, self.height) and self.enabled then
                 dxDrawRectangle(x, y, self.width, self.height, tocolor(self.color[1] + 25, self.color[2] + 25, self.color[3] + 25, self.color[4]), false)
             else
                 dxDrawRectangle(x, y, self.width, self.height, tocolor(unpack(self.color)), false)

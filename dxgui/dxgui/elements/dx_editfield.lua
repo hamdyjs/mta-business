@@ -3,6 +3,8 @@ local mt = getmetatable(dxEditField);
 mt.__index = function(self, key)
     if (key == "text") then
         return rawget(self, "edit").text;
+    elseif (key == "readOnly") then
+        return rawget(self, "edit").readOnly;
     else
         return rawget(dxEditField, key);
     end
@@ -10,6 +12,8 @@ end;
 mt.__newindex = function(self, key, value)
     if (key == "text") then
         self.edit:setText(value);
+    elseif (key == "readOnly") then
+        self.edit.readOnly = value;
     else
         rawset(self, key, value);
     end
@@ -30,7 +34,6 @@ function dxEditField:create ( x, y, width, height, text, parent )
     self.color = {255, 255, 255, 200};
     -- self.masked = false
     -- self.maxLength = false
-    self.readOnly = false
     -- self.caret = 0
     self.visible = true;
     self.render = true;
@@ -63,11 +66,11 @@ dxEditField.new = dxEditField.create;
 -- end
 
 function dxEditField:getReadOnly ( )
-    return self.edit.readOnly
+    return self.readOnly;
 end
 
 function dxEditField:setReadOnly ( readOnly )
-    self.edit.readOnly = readOnly
+    self.readOnly = readOnly;
 end
 
 function dxEditField:setCaretIndex ( index )

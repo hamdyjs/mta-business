@@ -14,6 +14,7 @@ function dxCheckBox:create ( x, y, width, text, parent )
     self.color = {255, 255, 255, 200};
     self.text_color = {255, 255, 255, 200};
     self.selected = selected
+    self.enabled = true;
     self.visible = true
     self.render = true
     --self.active = false
@@ -41,7 +42,7 @@ function dxCheckBox:draw ()
         local box_width, box_height = self.height, self.height;
         local r, g, b, a = unpack(self.color);
         local text_r, text_g, text_b, text_a = unpack(self.text_color);
-        if isCursorShowing() and (not Cursor.active) and (self.parent and self.parent:isCursorOverRectangle(self.x, self.y, box_width + dxGetTextWidth(self.text) + 5, box_height) or isCursorOverRectangle(self.x, self.y, box_width + dxGetTextWidth(self.text) + 5, box_height)) then
+        if self.enabled and isCursorShowing() and (not Cursor.active) and (self.parent and self.parent:isCursorOverRectangle(self.x, self.y, box_width + dxGetTextWidth(self.text) + 5, box_height) or isCursorOverRectangle(self.x, self.y, box_width + dxGetTextWidth(self.text) + 5, box_height)) then
             a = 255;
             text_a = 255;
 

@@ -12,6 +12,7 @@ function dxTreeView:create(x, y, width, height, text, parent)
 	self.items = {};
 	self.folded = {};
 	self.color = {255, 255, 255, 125};
+	self.enabled = true;
 	self.render = true;
 	self.visible = true;
 
@@ -53,7 +54,7 @@ function _drawItem(item, parent, current_y, current_level)
 	local text = item.text;
 	local r, g, b, a = unpack(item.color);
 	local x = parent.x + 5 + (current_level * 20);
-    if isCursorShowing() and (not Cursor.active) and (parent.parent and parent.parent:isCursorOverRectangle(x, current_y, parent.width - 15, dxGetFontHeight() + 5) or isCursorOverRectangle(x, current_y, parent.width - 15, dxGetFontHeight() + 5)) then
+    if self.enabled and item.enabled and isCursorShowing() and (not Cursor.active) and (parent.parent and parent.parent:isCursorOverRectangle(x, current_y, parent.width - 15, dxGetFontHeight() + 5) or isCursorOverRectangle(x, current_y, parent.width - 15, dxGetFontHeight() + 5)) then
 		a = 255
 
         if (getKeyState("mouse1") and not _clicked) then

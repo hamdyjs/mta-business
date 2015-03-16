@@ -8,6 +8,7 @@ function dxTreeViewItem:create(text, parent)
 	self.parent = parent;
 	self.folded = true;
 	self.color = {0, 0, 0, 200};
+	self.enabled = true;
 
 	self.items = {};
 	table.insert(parent.items, self);

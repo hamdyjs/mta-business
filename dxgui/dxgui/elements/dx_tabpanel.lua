@@ -62,7 +62,7 @@ function dxTabPanel:draw()
 			if (dxGetTextWidth(tab.title) > tab_width) then tab_width = dxGetTextWidth(tab.title) + 20; end
 			local r, g, b, a = unpack(self.color);
 		    local x = self.x + (tab_width * (index - 1));
-		    if (isCursorShowing() and (not Cursor.active) and (self.parent and self.parent:isCursorOverRectangle(x, self.y, tab_width, tab_height) or isCursorOverRectangle(x, self.y, tab_width, tab_height))) then
+		    if (tab.enabled and isCursorShowing() and (not Cursor.active) and (self.parent and self.parent:isCursorOverRectangle(x, self.y, tab_width, tab_height) or isCursorOverRectangle(x, self.y, tab_width, tab_height))) then
 		        a = 255;
 
 		        if (getKeyState("mouse1") and not _clicked) then
