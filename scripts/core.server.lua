@@ -41,7 +41,7 @@ end
 
 addCommandHandler("business", function(player)
 	if (ACL.hasObjectPermissionTo(player, "function.banPlayer")) then
-		triggerClientEvent(player, "client:showCreateBusinessGUI", player);
+		triggerClientEvent(player, "business.client.showCreateBusinessWindow", player);
 	else
 		player:outputMessage("Business: You don't have access to this command.", 255, 0, 0);
 	end
@@ -72,8 +72,8 @@ addEventHandler("server:outputMessage", root, function(message, r, g, b)
 	source:outputMessage(message, r, g, b);
 end);
 
-addEvent("server:createBusiness", true);
-addEventHandler("server:createBusiness", root, function(posX, posY, posZ, interior, dimension, name, cost, payout, payoutTime, payoutUnit)
+addEvent("business.server.createBusiness", true);
+addEventHandler("business.server.createBusiness", root, function(posX, posY, posZ, interior, dimension, name, cost, payout, payoutTime, payoutUnit)
 	database:query(dbCreateBusinessCallback,  {posX, posY, posZ, interior, dimension, name, cost, payout, payoutTime, payoutUnit}, "SELECT * FROM business");
 end);
 
@@ -196,7 +196,7 @@ function onPlayerAttemptToOpenBusiness(player)
 		if (player:isInMarker(bMarker)) then
 			local bData = bMarker:getData("bData");
 			local id, name, owner, cost, payout, payoutTime, payoutOTime, payoutUnit, bank, timer = unpack(bData);
-			triggerClientEvent(player, "client:showBusinessGUI", player, bMarker, getAccountName(getPlayerAccount(player)) == owner, ACL.hasObjectPermissionTo(player, "function.banPlayer"));
+			triggerClientEvent(player, "business.client.showBusinessWindow", player, bMarker, getAccountName(getPlayerAccount(player)) == owner, ACL.hasObjectPermissionTo(player, "function.banPlayer"));
 			break;
 		end
 	end
