@@ -184,6 +184,12 @@ addEventHandler("onClientResourceStart", resourceRoot, function()
 	gui.b.button.accept = dxButton(130, 100, 241, 41, "Accept", gui.b.tab.action);
 	gui.b.button.destroy = dxButton(130, 155, 241, 41, "Destroy", gui.b.tab.action);
 	gui.b.button.x = dxButton(480, 25, 31, 31, "X", gui.b.window);
+
+	gui.b.button.x.func = function(state)
+		if (state ~= "down") then return; end
+		gui.b.window.visible = false;
+		showCursor(false);
+	end
 end);
 
 function createBusiness()
