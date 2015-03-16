@@ -1,4 +1,4 @@
-local gui = {};
+gui = {};
 local screen_width, screen_height = GuiElement.getScreenSize();
 
 addEventHandler("onClientResourceStart", resourceRoot, function()
