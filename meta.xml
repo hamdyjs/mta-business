@@ -26,7 +26,7 @@
 
 	<!-- dxgui -->
 		<script src="dxgui/dxgui/shared/middleclass.lua" type="client" />
-		<script src="dxgui/dxgui/shared/classlib.lua" type="client" />
+		<!-- <script src="dxgui/dxgui/shared/classlib.lua" type="client" /> -->
 		<script src="dxgui/dxgui/shared/util.lua" type="client" />
 		<script src="dxgui/dxgui/shared/Cursor.lua" type="client" />
 
