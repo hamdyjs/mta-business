@@ -21,6 +21,7 @@ We're currently working on building the foundation for dxGUI, but you should hav
 project contributors
 ---------------------
 - Jordan "Woovie" Banasik
+- JR10
 - Qais "qaisjp" Patankar
 - Stefan "StiviK" K.
 
