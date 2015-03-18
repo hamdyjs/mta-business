@@ -47,5 +47,6 @@ function spairs (t, f)
 end
 
 function debug(...)
+	for i, v in ipairs(arg) do arg[i] = tostring(v); end
     outputDebugString(table.concat(arg, "  "));
 end
