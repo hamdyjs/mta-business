@@ -123,7 +123,7 @@ function dbCreateBusinessCallback(query_handle, posX, posY, posZ, interior, dime
 		addEventHandler("onMarkerHit", bMarker, onBusinessMarkerHit);
 		addEventHandler("onMarkerLeave", bMarker, onBusinessMarkerLeave);
 		if (#tostring(id) == 1) then id = "0".. tostring(id) end
-		source:outputMessage("Business: Business(ID #"..id..") has been created successfully", 0, 255, 0);
+		client:outputMessage("Business: Business(ID #"..id..") has been created successfully", 0, 255, 0);
 	end
 end
 
