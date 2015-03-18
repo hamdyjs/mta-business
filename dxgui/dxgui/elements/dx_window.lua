@@ -107,7 +107,7 @@ function dxWindow:setVisible(visible)
         if (element.type == "editfield") then
             element.edit.visible = visible;
         elseif (element.type == "tabpanel") then
-            for index, tab in pairs(self.tabs) do
+            for index, tab in pairs(element.tabs) do
                 for index, element in pairs(tab.children) do
                     if (element.type == "editfield") then
                         element.edit.visible = visible;
