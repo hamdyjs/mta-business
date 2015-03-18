@@ -114,8 +114,7 @@ addEventHandler("onClientResourceStart", resourceRoot, function()
 		if x ~= "" and name ~= "" and cost ~= ""  and tonumber(cost) ~= nil and payout ~= "" and tonumber(payout) ~= nil and payout_time ~= "" and tonumber(payout_time) ~= nil and tonumber(payout_time) > 0 and tonumber(cost) > 0 and tonumber(payout) > 0 then
 			if #name > 30 then outputMessage("BUSINESS: Business name must not be more than 30 characters", 255, 0, 0); return; end
 			local zone = getZoneName(tonumber(x), tonumber(y), tonumber(z), false);
-			if zone == "Unknown" then gui.cbc.edit.location.text = "the middle of no where" end;
-			gui.cbc.edit.cost.text = name;
+			if zone == "Unknown" then zone = "the middle of no where" end;
 			local interior = tonumber(gettok(intdim, 1, ","));
 			local dimension = tonumber(gettok(intdim, 2, ","));
 			dxCreatePrompt("Are you sure you want to create business '"..name.."' in "..zone, createBusiness);
