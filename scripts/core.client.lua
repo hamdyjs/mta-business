@@ -250,93 +250,93 @@ addEventHandler("client:hideInstructions", root,
 -- 	action = "Destroy";
 -- end
 
-addEvent("business.client.showBusinessWindow", true);
-addEventHandler("business.client.showBusinessWindow", root,
-	function(bMarker, isOwner, isAdmin)
-		local bData = bMarker:getData("bData");
-		local id, name, owner, cost, payout, payout_time, payout_otime, payout_unit, bank, timer = unpack(bData);
-		local posX, posY, posZ = bMarker.position;
-		if #tostring(id) == 1 then id = "0"..tostring(id) end
-		gui.b.window.text = name;
-		gui.b.label.id.text = "ID: #"..id;
-		gui.b.label.name.text = "Name: "..name;
-		gui.b.label.owner.text = "Owner: "..owner;
-		gui.b.label.cost.text = "Cost: $"..cost;
-		gui.b.label.payout.text = "Payout: $"..payout;
-		gui.b.label.payout_time.text = "Payout Time: "..payout_otime.." "..payout_unit;
-		gui.b.label.location.text = "Location: "..getZoneName(posX, posY, posZ, false).."("..getZoneName(posX, posY, posZ, true)..")";
-		gui.b.label.bank.text = "Bank: $"..bank;
+-- addEvent("business.client.showBusinessWindow", true);
+-- addEventHandler("business.client.showBusinessWindow", root,
+-- 	function(bMarker, isOwner, isAdmin)
+-- 		local bData = bMarker:getData("bData");
+-- 		local id, name, owner, cost, payout, payout_time, payout_otime, payout_unit, bank, timer = unpack(bData);
+-- 		local posX, posY, posZ = bMarker.position;
+-- 		if #tostring(id) == 1 then id = "0"..tostring(id) end
+-- 		gui.b.window.text = name;
+-- 		gui.b.label.id.text = "ID: #"..id;
+-- 		gui.b.label.name.text = "Name: "..name;
+-- 		gui.b.label.owner.text = "Owner: "..owner;
+-- 		gui.b.label.cost.text = "Cost: $"..cost;
+-- 		gui.b.label.payout.text = "Payout: $"..payout;
+-- 		gui.b.label.payout_time.text = "Payout Time: "..payout_otime.." "..payout_unit;
+-- 		gui.b.label.location.text = "Location: "..getZoneName(posX, posY, posZ, false).."("..getZoneName(posX, posY, posZ, true)..")";
+-- 		gui.b.label.bank.text = "Bank: $"..bank;
 
-		if isAdmin and isOwner then
-			gui.b.tab.action.enabled = true;
-			gui.b.button.sell.enabled = true;
-			gui.b.edit.action.enabled = true;
-			gui.b.button.deposit.enabled = true;
-			gui.b.button.withdraw.enabled = true;
-			gui.b.button.accept.enabled = true;
-			gui.b.button.set_name.enabled = true;
-			gui.b.button.set_owner.enabled = true;
-			gui.b.button.cost.enabled = true;
-			gui.b.button.set_bank.enabled = true;
-			gui.b.button.buy.enabled = false;
-		elseif isAdmin and not isOwner and owner ~= "For Sale" then
-			gui.b.tab.action.enabled = true;
-			gui.b.button.set_name.enabled = true;
-			gui.b.button.set_owner.enabled = true;
-			gui.b.button.cost.enabled = true;
-			gui.b.button.set_bank.enabled = true;
-			gui.b.button.accept.enabled = true;
-			gui.b.edit.action.enabled = true;
-			gui.b.button.sell.enabled = true;
-			gui.b.button.buy.enabled = false;
-			gui.b.button.deposit.enabled = false;
-			gui.b.button.withdraw.enabled = false;
-		elseif isAdmin and not isOwner and owner == "For Sale" then
-			gui.b.tab.action.enabled = true;
-			gui.b.button.set_name.enabled = true;
-			gui.b.button.set_owner.enabled = true;
-			gui.b.button.cost.enabled = true;
-			gui.b.button.set_bank.enabled = true;
-			gui.b.button.accept.enabled = true;
-			gui.b.edit.action.enabled = true;
-			gui.b.button.sell.enabled = false;
-			gui.b.button.buy.enabled = true;
-			gui.b.button.deposit.enabled = false;
-			gui.b.button.withdraw.enabled = false;
-		elseif not isAdmin and isOwner then
-			gui.b.tab.action.enabled = true;
-			gui.b.button.set_name.enabled = false;
-			gui.b.button.set_owner.enabled = false;
-			gui.b.button.cost.enabled = false;
-			gui.b.button.set_bank.enabled = false;
-			gui.b.button.accept.enabled = true;
-			gui.b.edit.action.enabled = true;
-			gui.b.button.sell.enabled = true;
-			gui.b.button.deposit.enabled = true;
-			gui.b.button.withdraw.enabled = true;
-			gui.b.button.buy.enabled = false;
-		elseif not isAdmin and not isOwner and owner ~= "For Sale" then
-			gui.b.tab.action.enabled = false;
-			gui.b.tab_panel:setSelectedTab(gui.b.tab.info);
-		elseif not isAdmin and not isOwner and owner == "For Sale" then
-			gui.b.tab.action.enabled = true;
-			gui.b.button.set_name.enabled = false;
-			gui.b.button.set_owner.enabled = false;
-			gui.b.button.cost.enabled = false;
-			gui.b.button.set_bank.enabled = false;
-			gui.b.button.accept.enabled = false;
-			gui.b.edit.action.enabled = false;
-			gui.b.button.sell.enabled = false;
-			gui.b.button.deposit.enabled = false;
-			gui.b.button.withdraw.enabled = false;
-			gui.b.button.buy.enabled = true;
-		end
+-- 		if isAdmin and isOwner then
+-- 			gui.b.tab.action.enabled = true;
+-- 			gui.b.button.sell.enabled = true;
+-- 			gui.b.edit.action.enabled = true;
+-- 			gui.b.button.deposit.enabled = true;
+-- 			gui.b.button.withdraw.enabled = true;
+-- 			gui.b.button.accept.enabled = true;
+-- 			gui.b.button.set_name.enabled = true;
+-- 			gui.b.button.set_owner.enabled = true;
+-- 			gui.b.button.cost.enabled = true;
+-- 			gui.b.button.set_bank.enabled = true;
+-- 			gui.b.button.buy.enabled = false;
+-- 		elseif isAdmin and not isOwner and owner ~= "For Sale" then
+-- 			gui.b.tab.action.enabled = true;
+-- 			gui.b.button.set_name.enabled = true;
+-- 			gui.b.button.set_owner.enabled = true;
+-- 			gui.b.button.cost.enabled = true;
+-- 			gui.b.button.set_bank.enabled = true;
+-- 			gui.b.button.accept.enabled = true;
+-- 			gui.b.edit.action.enabled = true;
+-- 			gui.b.button.sell.enabled = true;
+-- 			gui.b.button.buy.enabled = false;
+-- 			gui.b.button.deposit.enabled = false;
+-- 			gui.b.button.withdraw.enabled = false;
+-- 		elseif isAdmin and not isOwner and owner == "For Sale" then
+-- 			gui.b.tab.action.enabled = true;
+-- 			gui.b.button.set_name.enabled = true;
+-- 			gui.b.button.set_owner.enabled = true;
+-- 			gui.b.button.cost.enabled = true;
+-- 			gui.b.button.set_bank.enabled = true;
+-- 			gui.b.button.accept.enabled = true;
+-- 			gui.b.edit.action.enabled = true;
+-- 			gui.b.button.sell.enabled = false;
+-- 			gui.b.button.buy.enabled = true;
+-- 			gui.b.button.deposit.enabled = false;
+-- 			gui.b.button.withdraw.enabled = false;
+-- 		elseif not isAdmin and isOwner then
+-- 			gui.b.tab.action.enabled = true;
+-- 			gui.b.button.set_name.enabled = false;
+-- 			gui.b.button.set_owner.enabled = false;
+-- 			gui.b.button.cost.enabled = false;
+-- 			gui.b.button.set_bank.enabled = false;
+-- 			gui.b.button.accept.enabled = true;
+-- 			gui.b.edit.action.enabled = true;
+-- 			gui.b.button.sell.enabled = true;
+-- 			gui.b.button.deposit.enabled = true;
+-- 			gui.b.button.withdraw.enabled = true;
+-- 			gui.b.button.buy.enabled = false;
+-- 		elseif not isAdmin and not isOwner and owner ~= "For Sale" then
+-- 			gui.b.tab.action.enabled = false;
+-- 			gui.b.tab_panel:setSelectedTab(gui.b.tab.info);
+-- 		elseif not isAdmin and not isOwner and owner == "For Sale" then
+-- 			gui.b.tab.action.enabled = true;
+-- 			gui.b.button.set_name.enabled = false;
+-- 			gui.b.button.set_owner.enabled = false;
+-- 			gui.b.button.cost.enabled = false;
+-- 			gui.b.button.set_bank.enabled = false;
+-- 			gui.b.button.accept.enabled = false;
+-- 			gui.b.edit.action.enabled = false;
+-- 			gui.b.button.sell.enabled = false;
+-- 			gui.b.button.deposit.enabled = false;
+-- 			gui.b.button.withdraw.enabled = false;
+-- 			gui.b.button.buy.enabled = true;
+-- 		end
 
-		gui.b.window.visible = true;
-		showCursor(true);
-		removeEventHandler("onClientRender", root, showInstructions)
-	end
-);
+-- 		gui.b.window.visible = true;
+-- 		showCursor(true);
+-- 		removeEventHandler("onClientRender", root, showInstructions)
+-- 	end
+-- );
 
 -- function on_bacAcceptI_clicked(button, state, absoluteX, absoluteY)
 -- 	if(button ~= "left") or(state ~= "up") then
