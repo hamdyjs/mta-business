@@ -210,6 +210,22 @@ function Ped:getMarker()
 	end
 end
 
+addEvent("business.server.buy", true);
+addEventHandler("business.server.buy", root, function()
+	local account = client.account;
+	if (not account or account:isGuest()) then return; end
+	local b_marker = client:getMarker();
+	if (not isElement(b_marker)) then return; end
+	local b_data = b_marker:getData("bData");
+	local id, name, owner, cost, payout, payout_time, payout_otime, payout_unit, bank, timer = unpack(b_data);
+	if (owner ~= "For Sale") then
+		client:outputMessage("Business: This business is owned", 255, 0, 0);
+		return;
+	end
+	database:query(dbBuyBusinessCallback, {client, b_marker, id, name, owner, cost, payout, payout_time, payout_otime, payout_unit, bank, timer}, "SELECT * FROM business WHERE bOwner = ?", account.name);
+end);
+
+
 addEvent("server:onActionAttempt", true);
 addEventHandler("server:onActionAttempt", root, function(action, text)
 	local account = source.account;
