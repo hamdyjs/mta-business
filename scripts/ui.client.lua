@@ -203,7 +203,6 @@ function createBusiness()
 	local payout = gui.cbc.edit.payout.text;
 	local payoutTime, payoutUnit = gettok(gui.cbc.edit.payout_time.text, 1, " "), gettok(gui.cbc.edit.payout_time.text, 2, " ");
 	triggerServerEvent("business.server.createBusiness", root, posX, posY, posZ, interior, dimension, name, cost, payout, payoutTime, payoutUnit);
-	addEventHandler("onClientRender", root, fillP);
 end
 
 -- gui.cb.button.pickup.func = function(button, state)
