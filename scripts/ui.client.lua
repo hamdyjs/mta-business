@@ -194,15 +194,16 @@ end);
 
 function createBusiness()
 	Sound("files/cash.mp3", false);
-	gui.cb.window.visible = false;
 	showCursor(false);
-	gui.cb.button.clear("left", "up");
-	local x, y, z, interior, dimension = gettok(gui.cbc.edit.position.text, 1, ","), gettok(gui.cbc.edit.position.text, 2, ","), gettok(gui.cbc.edit.position.text, 3, ","), gettok(gui.cbc.edit.position.text, 4, ","), gettok(gui.cbc.edit.position.text, 5, ",");
-	local name = gui.cbc.edit.cost.text;
-	local cost = gui.cbc.edit.cost.text;
-	local payout = gui.cbc.edit.payout.text;
-	local payout_time, payout_unit = gettok(gui.cbc.edit.payout_time.text, 1, " "), gettok(gui.cbc.edit.payout_time.text, 2, " ");
+	local x, y, z, intdim = gui.cb.edit.posx.text, gui.cb.edit.posy.text, gui.cb.edit.posz.text, gui.cb.edit.intdim.text;
+	local interior, dimension = unpack(split(intdim, ","));
+	local name = gui.cb.edit.name.text;
+	local cost = gui.cb.edit.cost.text;
+	local payout = gui.cb.edit.payout.text;
+	local payout_time, payout_unit = gui.cb.edit.payout_time.text, gui.cb.unit:getItemText(gui.cb.unit:getSelected());
 	triggerServerEvent("business.server.createBusiness", root, x, y, z, interior, dimension, name, cost, payout, payout_time, payout_unit);
+	gui.cb.button.clear.func("up");
+	gui.cb.window.visible = false;
 end
 
 -- gui.cb.button.pickup.func = function(button, state)
