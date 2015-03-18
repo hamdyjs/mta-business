@@ -171,17 +171,17 @@ addEventHandler("onClientResourceStart", resourceRoot, function()
 	gui.b.button.withdraw = dxButton(10, 160, 101, 31, "Withdraw", gui.b.tab.action);
 	gui.b.button.set_name = dxButton(390, 10, 101, 31, "Set Name", gui.b.tab.action);
 	gui.b.button.set_owner = dxButton(390, 60, 101, 31, "Set Owner", gui.b.tab.action);
-	gui.b.button.cost = dxButton(390, 110, 101, 31, "Set Cost", gui.b.tab.action);
+	gui.b.button.set_cost = dxButton(390, 110, 101, 31, "Set Cost", gui.b.tab.action);
 	gui.b.button.set_bank = dxButton(390, 160, 101, 31, "Set Bank", gui.b.tab.action);
 
-	gui.b.edit.action = dxEditField(130, 50, 241, 31, "", gui.b.tab.action);
+	-- gui.b.edit.action = dxEditField(130, 50, 241, 31, "", gui.b.tab.action);
 
-	gui.b.label.action = dxText(130, 10, 241, 21, "Action:", gui.b.tab.action);
-		gui.b.label.action:setAlignX("center", false);
-		gui.b.label.action:setAlignY("center");
-		gui.b.label.action:setColor(255, 0, 0);
+	-- gui.b.label.action = dxText(130, 10, 241, 21, "Action:", gui.b.tab.action);
+		-- gui.b.label.action:setAlignX("center", false);
+		-- gui.b.label.action:setAlignY("center");
+		-- gui.b.label.action:setColor(255, 0, 0);
 
-	gui.b.button.accept = dxButton(130, 100, 241, 41, "Accept", gui.b.tab.action);
+	-- gui.b.button.accept = dxButton(130, 100, 241, 41, "Accept", gui.b.tab.action);
 	gui.b.button.destroy = dxButton(130, 155, 241, 41, "Destroy", gui.b.tab.action);
 	gui.b.button.x = dxButton(480, 25, 31, 31, "X", gui.b.window);
 
