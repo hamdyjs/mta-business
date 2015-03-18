@@ -117,7 +117,7 @@ addEventHandler("onClientResourceStart", resourceRoot, function()
 			if zone == "Unknown" then zone = "the middle of no where" end;
 			local interior = tonumber(gettok(intdim, 1, ","));
 			local dimension = tonumber(gettok(intdim, 2, ","));
-			dxCreatePrompt("Are you sure you want to create business '"..name.."' in "..zone, createBusiness);
+			dxPrompt("Are you sure you want to create business '"..name.."' in "..zone, createBusiness);
 		else
 			outputMessage("BUSINESS: The data isn't correct, please correct it", 255, 0, 0);
 		end
