@@ -192,20 +192,11 @@ addEventHandler("business.client.showBusinessWindow", root,
 			gui.b.button.buy.enabled = true;
 		end
 
--- addEvent("client:onAction", true);
--- addEventHandler("client:onAction", root,
--- 	function(close, playCash)
--- 		if close then
--- 			gui.b.window.visible = false;
--- 			showCursor(false);
--- 		end
--- 		if playCash then
--- 			Sound("files/cash.mp3", false);
--- 		end
--- 		gui.b.label.action.text = "Action:";
--- 		gui.b.edit.action.text = "";
--- 	end
--- );
+		gui.b.window.visible = true;
+		showCursor(true);
+		removeEventHandler("onClientRender", root, showInstructions)
+	end
+);
 
 addEventHandler("onClientResourceStart", resourceRoot,
 	function()
