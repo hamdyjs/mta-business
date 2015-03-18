@@ -38,16 +38,18 @@ function dxEditField:create ( x, y, width, height, text, parent )
     self.visible = true;
     self.render = true;
 
-    self.edit = GuiEdit(x, y, width, height, text, false);
+    self.edit = GuiEdit(x, y, width, height, text or "", false);
     self.edit:setAlpha(0);
     self.edit:setProperty("AlwaysOnTop", "true");
 
+    --TODO: This needs a rewrite, stop using GuiEdit and actually code a dx one from scratch
     if (parent) then
         self.parent = parent;
         self.render = false;
         table.insert(parent.children, self);
         self.edit:setPosition(parent.x + x, parent.y + y, false);
-        self.edit.visible = parent.visible;
+        if (parent.type == "tab") then self.edit.visible = parent.panel.parent.visible;
+        else self.edit.visible = parent.visible; end
     end
 
     addEventHandler("onClientGUIChanged", self.edit, function() _checkForWidth(self); end, false);

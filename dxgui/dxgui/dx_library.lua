@@ -177,24 +177,30 @@ function dxGUI:setVisible ( visible )
     end
 end
 
-function dxPrompt(message, ycallback, ncallback)
+function dxPrompt(message, ycallback, ncallback, include_edit)
     if not (message and type(ycallback) == "function") then return; end
     local screen_width, screen_height = GuiElement.getScreenSize();
     showCursor(true)
-    local window = dxWindow((screen_width - 300) / 2, (screen_height - 200) / 2, 300, 200, "Confirmation");
-    local label = dxText(10, 20, 280, 150, message, window);
+    local width, height = 300, 200
+    local button_y = 160;
+    local edit;
+    local x, y = (screen_width - width) / 2, (screen_height - height) / 2;
+    local window = dxWindow(x, y, width, height, "Confirmation");
+    local label = dxText(10, 20, 280, 115, message, window);
         label:setAlignX("center");
         label:setAlignY("center");
         label:setWordbreak(true);
-    local y = dxButton(5, 160, 137.5, 30, "Yes", window);
-    local n = dxButton(152.5, 160, 140, 30, "No", window);
+    local edit;
+    if (include_edit) then edit = dxEditField(10, 120, 280, 30, "", window); end
+    local y = dxButton(5, button_y, 137.5, 30, "Yes", window);
+    local n = dxButton(152.5, button_y, 140, 30, "No", window);
         y:setColor(125, 0, 0);
         n:setColor(125, 0, 0);
     y.func = function(state)
         if (state ~= "up") then return; end
         showCursor(false);
         window:destroy();
-        return ycallback();
+        return ycallback(include_edit and edit.text or nil);
     end
     n.func = function(state)
         if (state ~= "up") then return; end
