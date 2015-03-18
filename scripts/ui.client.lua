@@ -100,6 +100,7 @@ addEventHandler("onClientResourceStart", resourceRoot, function()
 	gui.cb.button.cancel.func = function(state)
 		if (state ~= "up") then return; end
 		gui.cb.window.visible = false;
+		showCursor(false);
 	end
 
 	gui.cb.button.create.func = function(state)
