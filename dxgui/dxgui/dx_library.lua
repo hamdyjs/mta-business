@@ -221,7 +221,7 @@ function onClick(...)
     local testfunc = function (a, b) if table.find(dxObjects, b) < table.find(dxObjects, a) then return true end end
 
     for k, v in spairs(dxObjects, testfunc) do
-        if (self.enabled) then
+        if (v.enabled) then
             local visible = v.visible;
             if (v.parent) then
                 if (v.parent.type == "window") then visible = v.parent.visible and v.visible;
