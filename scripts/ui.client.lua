@@ -104,19 +104,19 @@ addEventHandler("onClientResourceStart", resourceRoot, function()
 
 	gui.cb.button.create.func = function(state)
 		if (state ~= "up") then return; end
-		local posX, posY, posZ, intDim = gui.cb.edit.posx.text, gui.cb.edit.posy.text, gui.cb.edit.posz.text, gui.cb.edit.intdim.text;
+		local x, y, z, intdim = gui.cb.edit.posx.text, gui.cb.edit.posy.text, gui.cb.edit.posz.text, gui.cb.edit.intdim.text;
 		local name = gui.cb.edit.name.text;
 		local cost = gui.cb.edit.cost.text;
 		local payout = gui.cb.edit.payout.text;
-		local payoutTime = gui.cb.edit.payout_time.text;
-		local payoutUnit = gui.cb.unit:getItemText(gui.cb.unit:getSelected());
-		if posX ~= "" and name ~= "" and cost ~= ""  and tonumber(cost) ~= nil and payout ~= "" and tonumber(payout) ~= nil and payoutTime ~= "" and tonumber(payoutTime) ~= nil and tonumber(payoutTime) > 0 and tonumber(cost) > 0 and tonumber(payout) > 0 then
+		local payout_time = gui.cb.edit.payout_time.text;
+		-- local payout_unit = gui.cb.unit:getItemText(gui.cb.unit:getSelected());
+		if x ~= "" and name ~= "" and cost ~= ""  and tonumber(cost) ~= nil and payout ~= "" and tonumber(payout) ~= nil and payout_time ~= "" and tonumber(payout_time) ~= nil and tonumber(payout_time) > 0 and tonumber(cost) > 0 and tonumber(payout) > 0 then
 			if #name > 30 then outputMessage("BUSINESS: Business name must not be more than 30 characters", 255, 0, 0); return; end
-			local zone = getZoneName(tonumber(posX), tonumber(posY), tonumber(posZ), false);
+			local zone = getZoneName(tonumber(x), tonumber(y), tonumber(z), false);
 			if zone == "Unknown" then gui.cbc.edit.location.text = "the middle of no where" end;
 			gui.cbc.edit.cost.text = name;
-			local interior = tonumber(gettok(intDim, 1, ","));
-			local dimension = tonumber(gettok(intDim, 2, ","));
+			local interior = tonumber(gettok(intdim, 1, ","));
+			local dimension = tonumber(gettok(intdim, 2, ","));
 			dxCreatePrompt("Are you sure you want to create business '"..name.."' in "..zone, createBusiness);
 		else
 			outputMessage("BUSINESS: The data isn't correct, please correct it", 255, 0, 0);
@@ -197,12 +197,12 @@ function createBusiness()
 	gui.cb.window.visible = false;
 	showCursor(false);
 	gui.cb.button.clear("left", "up");
-	local posX, posY, posZ, interior, dimension = gettok(gui.cbc.edit.position.text, 1, ","), gettok(gui.cbc.edit.position.text, 2, ","), gettok(gui.cbc.edit.position.text, 3, ","), gettok(gui.cbc.edit.position.text, 4, ","), gettok(gui.cbc.edit.position.text, 5, ",");
+	local x, y, z, interior, dimension = gettok(gui.cbc.edit.position.text, 1, ","), gettok(gui.cbc.edit.position.text, 2, ","), gettok(gui.cbc.edit.position.text, 3, ","), gettok(gui.cbc.edit.position.text, 4, ","), gettok(gui.cbc.edit.position.text, 5, ",");
 	local name = gui.cbc.edit.cost.text;
 	local cost = gui.cbc.edit.cost.text;
 	local payout = gui.cbc.edit.payout.text;
-	local payoutTime, payoutUnit = gettok(gui.cbc.edit.payout_time.text, 1, " "), gettok(gui.cbc.edit.payout_time.text, 2, " ");
-	triggerServerEvent("business.server.createBusiness", root, posX, posY, posZ, interior, dimension, name, cost, payout, payoutTime, payoutUnit);
+	local payout_time, payout_unit = gettok(gui.cbc.edit.payout_time.text, 1, " "), gettok(gui.cbc.edit.payout_time.text, 2, " ");
+	triggerServerEvent("business.server.createBusiness", root, x, y, z, interior, dimension, name, cost, payout, payout_time, payout_unit);
 end
 
 -- gui.cb.button.pickup.func = function(button, state)
