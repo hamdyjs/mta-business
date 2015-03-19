@@ -4,8 +4,8 @@ local action;
 local settings = {};
 GuiElement.setInputMode("no_binds_when_editing");
 
-addEvent("business.client.showCreateBusinessWindow", true);
-addEventHandler("business.client.showCreateBusinessWindow", root,
+addEvent("business.showCreateBusinessWindow", true);
+addEventHandler("business.showCreateBusinessWindow", root,
 	function()
 		gui.cb.window.visible = true;
 		showCursor(true);
@@ -13,7 +13,7 @@ addEventHandler("business.client.showCreateBusinessWindow", root,
 );
 
 function outputMessage(message, r, g, b)
-	triggerServerEvent("server:outputMessage", localPlayer, message, r, g, b);
+	triggerServerEvent("business.outputMessage", localPlayer, message, r, g, b);
 end
 
 addEventHandler("onClientRender", root,
@@ -66,8 +66,8 @@ addEventHandler("onClientRender", root,
 	end
 );
 
-addEvent("client:showInstructions", true);
-addEventHandler("client:showInstructions", root,
+addEvent("business.showInstructions", true);
+addEventHandler("business.showInstructions", root,
 	function()
 		addEventHandler("onClientRender", root, showInstructions);
 	end
@@ -81,15 +81,15 @@ function showInstructions()
 	end
 end
 
-addEvent("client:hideInstructions", true);
-addEventHandler("client:hideInstructions", root,
+addEvent("business.hideInstructions", true);
+addEventHandler("business.hideInstructions", root,
 	function()
 		removeEventHandler("onClientRender", root, showInstructions);
 	end
 );
 
-addEvent("business.client.showBusinessWindow", true);
-addEventHandler("business.client.showBusinessWindow", root,
+addEvent("business.showBusinessWindow", true);
+addEventHandler("business.showBusinessWindow", root,
 	function(b_marker, is_owner, is_admin)
 		local b_data = b_marker:getData("b_data");
 		local id, name, owner, cost, payout, payout_time, payout_otime, payout_unit, bank, timer = unpack(b_data);
@@ -169,12 +169,12 @@ addEventHandler("business.client.showBusinessWindow", root,
 
 addEventHandler("onClientResourceStart", resourceRoot,
 	function()
-		triggerServerEvent("onClientCallSettings", localPlayer);
+		triggerServerEvent("business.getSettings", localPlayer);
 	end
 );
 
-addEvent("onClientCallSettings", true);
-addEventHandler("onClientCallSettings", root,
+addEvent("business.getSettings", true);
+addEventHandler("business.getSettings", root,
 	function(settings2)
 		settings = settings2;
 	end

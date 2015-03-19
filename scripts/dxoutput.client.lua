@@ -55,7 +55,7 @@ function dxDrawFramedText(message, left, top, width, height, color, scale, font,
 	dxDrawText(message, left, top, width, height, color, scale, font, alignX, alignY, clip, wordBreak, postGUI);
 end
 
-addEvent("client:dxOutputMessage", true)
-addEventHandler("client:dxOutputMessage", root, function(message, r, g, b)
+addEvent("business.dxOutputMessage", true)
+addEventHandler("business.dxOutputMessage", root, function(message, r, g, b)
 	dxOutputMessage(message, r, g, b);
 end);

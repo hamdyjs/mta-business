@@ -41,7 +41,7 @@ end
 
 addCommandHandler("business", function(player)
 	if (ACL.hasObjectPermissionTo(player, "function.banPlayer")) then
-		triggerClientEvent(player, "business.client.showCreateBusinessWindow", player);
+		triggerClientEvent(player, "business.showCreateBusinessWindow", player);
 	else
 		player:outputMessage("Business: You don't have access to this command.", 255, 0, 0);
 	end
@@ -64,16 +64,16 @@ function outputMessage(message, player, r, g, b)
 end
 
 function dxOutputMessage(message, player, r, g, b)
-	triggerClientEvent(player, "client:dxOutputMessage", player, message, r, g, b);
+	triggerClientEvent(player, "business.dxOutputMessage", player, message, r, g, b);
 end
 
-addEvent("server:outputMessage", true);
-addEventHandler("server:outputMessage", root, function(message, r, g, b)
+addEvent("business.outputMessage", true);
+addEventHandler("business.outputMessage", root, function(message, r, g, b)
 	source:outputMessage(message, r, g, b);
 end);
 
-addEvent("business.server.createBusiness", true);
-addEventHandler("business.server.createBusiness", root, function(x, y, z, interior, dimension, name, cost, payout, payout_time, payout_unit)
+addEvent("business.createBusiness", true);
+addEventHandler("business.createBusiness", root, function(x, y, z, interior, dimension, name, cost, payout, payout_time, payout_unit)
 	database:query(dbCreateBusinessCallback,  {client, x, y, z, interior, dimension, name, cost, payout, payout_time, payout_unit}, "SELECT * FROM business");
 end);
 
@@ -131,14 +131,14 @@ function onBusinessMarkerHit(hElement, mDim)
 	if (hElement:getType() ~= "player") then return; end
 	if (hElement:isInVehicle()) then return; end
 	if (not mDim) then return; end
-	triggerClientEvent(hElement, "client:showInstructions", hElement);
+	triggerClientEvent(hElement, "business.showInstructions", hElement);
 end
 
 function onBusinessMarkerLeave(hElement, mDim)
 	if (hElement:getType() ~= "player") then return; end
 	if (hElement:isInVehicle()) then return; end
 	if (not mDim) then return; end
-	triggerClientEvent(hElement, "client:hideInstructions", hElement);
+	triggerClientEvent(hElement, "business.hideInstructions", hElement);
 end
 
 function businessPayout(b_marker)
@@ -196,7 +196,7 @@ function onPlayerAttemptToOpenBusiness(player)
 		if (player:isInMarker(b_marker)) then
 			local b_data = b_marker:getData("b_data");
 			local id, name, owner, cost, payout, payout_time, payout_otime, payout_unit, bank, timer = unpack(b_data);
-			triggerClientEvent(player, "business.client.showBusinessWindow", player, b_marker, getAccountName(getPlayerAccount(player)) == owner, ACL.hasObjectPermissionTo(player, "function.banPlayer"));
+			triggerClientEvent(player, "business.showBusinessWindow", player, b_marker, getAccountName(getPlayerAccount(player)) == owner, ACL.hasObjectPermissionTo(player, "function.banPlayer"));
 			break;
 		end
 	end
@@ -210,8 +210,8 @@ function Ped:getMarker()
 	end
 end
 
-addEvent("business.server.buy", true);
-addEventHandler("business.server.buy", root, function()
+addEvent("business.buy", true);
+addEventHandler("business.buy", root, function()
 	local account = client.account;
 	if (not account or account:isGuest()) then return; end
 	local b_marker = client:getMarker();
@@ -225,8 +225,8 @@ addEventHandler("business.server.buy", root, function()
 	database:query(dbBuyBusinessCallback, {client, b_marker, id, name, owner, cost, payout, payout_time, payout_otime, payout_unit, bank, timer}, "SELECT * FROM business WHERE owner = ?", account.name);
 end);
 
-addEvent("business.server.sell", true);
-addEventHandler("business.server.sell", root, function()
+addEvent("business.sell", true);
+addEventHandler("business.sell", root, function()
 	local account = client.account;
 	if (not account or account:isGuest()) then return; end
 	local b_marker = client:getMarker();
@@ -251,8 +251,8 @@ addEventHandler("business.server.sell", root, function()
 	client:outputMessage("Business: You have successfully sold this business, all the money in the bank have been paid to you.", 0, 255, 0);
 end);
 
-addEvent("business.server.deposit", true);
-addEventHandler("business.server.deposit", root, function(amount)
+addEvent("business.deposit", true);
+addEventHandler("business.deposit", root, function(amount)
 	local account = client.account;
 	if (not account or account:isGuest()) then return; end
 	local b_marker = client:getMarker();
@@ -274,8 +274,8 @@ addEventHandler("business.server.deposit", root, function(amount)
 	client:outputMessage("Business: You have successfully deposited $"..amount.." to the business", 0, 255, 0);
 end);
 
-addEvent("business.server.withdraw", true);
-addEventHandler("business.server.withdraw", root, function(amount)
+addEvent("business.withdraw", true);
+addEventHandler("business.withdraw", root, function(amount)
 	local account = client.account;
 	if (not account or account:isGuest()) then return; end
 	local b_marker = client:getMarker();
@@ -297,8 +297,8 @@ addEventHandler("business.server.withdraw", root, function(amount)
 	client:outputMessage("Business: You have successfully withdrew $"..amount.." from the business", 0, 255, 0);
 end);
 
-addEvent("business.server.setName", true);
-addEventHandler("business.server.setName", root, function(new_name)
+addEvent("business.setName", true);
+addEventHandler("business.setName", root, function(new_name)
 	if (new_name == "" or #new_name > 30) then
 		client:outputMessage("Business: Invalid value", 255, 0, 0);
 		return;
@@ -316,8 +316,8 @@ addEventHandler("business.server.setName", root, function(new_name)
 	client:outputMessage("Business: You have successfully renamed the business", 0, 255, 0);
 end);
 
-addEvent("business.server.setOwner", true);
-addEventHandler("business.server.setOwner", root, function(new_owner)
+addEvent("business.setOwner", true);
+addEventHandler("business.setOwner", root, function(new_owner)
 	if (not ACL.hasObjectPermissionTo(client, "function.banPlayer")) then
 		client:outputMessage("Business: You don't have access to do that", 255, 0, 0);
 		return;
@@ -331,8 +331,8 @@ addEventHandler("business.server.setOwner", root, function(new_owner)
 	client:outputMessage("Business: You have successfully changed the business owner", 0, 255, 0);
 end);
 
-addEvent("business.server.setCost", true);
-addEventHandler("business.server.setCost", root, function(amount)
+addEvent("business.setCost", true);
+addEventHandler("business.setCost", root, function(amount)
 	if (tonumber(amount) == nil) then
 		client:outputMessage("Business: Invalid value", 255, 0, 0);
 		return;
@@ -351,8 +351,8 @@ addEventHandler("business.server.setCost", root, function(amount)
 	client:outputMessage("Business: You have successfully changed the business cost", 0, 255, 0);
 end);
 
-addEvent("business.server.setBank", true);
-addEventHandler("business.server.setBank", root, function(amount)
+addEvent("business.setBank", true);
+addEventHandler("business.setBank", root, function(amount)
 	if (tonumber(amount) == nil) then
 		client:outputMessage("Business: Invalid value", 255, 0, 0);
 		return;
@@ -371,8 +371,8 @@ addEventHandler("business.server.setBank", root, function(amount)
 	client:outputMessage("Business: You have successfully changed the business bank amount", 0, 255, 0);
 end);
 
-addEvent("business.server.destroy", true);
-addEventHandler("business.server.destroy", root, function()
+addEvent("business.destroy", true);
+addEventHandler("business.destroy", root, function()
 	if (not ACL.hasObjectPermissionTo(client, "function.banPlayer")) then
 		client:outputMessage("Business: You don't have access to do that", 255, 0, 0);
 		return;
@@ -386,7 +386,7 @@ addEventHandler("business.server.destroy", root, function()
 	b_marker:destroyAttachedBlips();
 	b_marker:destroy();
 	client:outputMessage("Business: You have successfully destroyed the business", 0, 255, 0);
-	triggerClientEvent(client, "client:hideInstructions", client);
+	triggerClientEvent(client, "business.hideInstructions", client);
 	database:query(dbReOrderBusinessesCallback,  "SELECT * FROM business");
 end);
 
@@ -432,7 +432,7 @@ function Element:destroyAttachedBlips()
 	end
 end
 
-addEvent("onClientCallSettings", true);
-addEventHandler("onClientCallSettings", root, function()
-	triggerClientEvent(source, "onClientCallSettings", source, settings);
+addEvent("business.getSettings", true);
+addEventHandler("business.getSettings", root, function()
+	triggerClientEvent(source, "business.getSettings", source, settings);
 end);
