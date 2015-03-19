@@ -13,7 +13,17 @@ if (not settings.blip or tonumber(settings.blip) == nil) then
 end
 
 addEventHandler("onResourceStart", resourceRoot, function()
-	database = Connection("sqlite", "files/business.db");
+	if (settings.database == "mysql") then
+		local host, db, username, password, port, socket = unpack(settings.database_data);
+		if not (host and db and username and password) then outputDebugString("Business: Failed to connect to the MySQL server - The data is invalid"); return; end
+		if (tonumber(port)) then port = "port="..port..";"; else port = ""; end
+		if (socket and socket ~= "") then socket = "socket="..socket..";"; else socket = ""; end
+		database = Connection("mysql", "host="..host..";dbname="..db..";"..port..socket, username, password);
+		if (not database) then outputDebugString("Business: Failed to connect to the MySQL server"); return; end
+	else
+		database = Connection("sqlite", "files/business.db");
+		if (not database) then outputDebugString("Business: Failed to connect to the SQLite file"); return; end
+	end
 	database:exec("CREATE TABLE IF NOT EXISTS business(id INT, name TEXT, owner TEXT, cost INT, pos TEXT, payout INT, payout_time INT, payout_otime INT, payout_unit TEXT, payout_cur_time INT, bank INT)");
 	database:query(dbCreateBusinessesCallback,  "SELECT * FROM business");
 end);
