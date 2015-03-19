@@ -207,7 +207,7 @@ addEventHandler("onClientResourceStart", resourceRoot, function()
 		dxPrompt("Enter the amount to deposit", function(amount)
 			amount = tonumber(amount);
 			if (not amount) then outputMessage("You must enter a correct amount", 255, 0, 0); return; end
-			triggerServerEvent("business.server.depsoit", root, amount);
+			triggerServerEvent("business.server.deposit", root, amount);
 			gui.b.window.visible = false;
 			showCursor(false);
 		end, nil, true);
