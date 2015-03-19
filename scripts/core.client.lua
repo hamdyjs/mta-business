@@ -18,47 +18,47 @@ end
 
 addEventHandler("onClientRender", root,
 	function()
-		for index, bMarker in ipairs(Element.getAllByType("marker", resourceRoot)) do
-			local bData = bMarker:getData("bData");
-			local id, name, owner, cost, payout, payoutTime, payoutOTime, payoutUnit, bank, timer = unpack(bData);
-			local posX, posY, posZ = bMarker.position.x, bMarker.position.y, bMarker.position.z;
-			local camX, camY, camZ = getCameraMatrix();
-			if getDistanceBetweenPoints3D(camX, camY, camZ, posX, posY, posZ) < 15 then
-				local scX, scY = getScreenFromWorldPosition(posX, posY, posZ + 1.6);
-				if scX then
+		for index, b_marker in ipairs(Element.getAllByType("marker", resourceRoot)) do
+			local b_data = b_marker:getData("b_data");
+			local id, name, owner, cost, payout, payout_time, payout_otime, payout_unit, bank, timer = unpack(b_data);
+			local x, y, z = b_marker.position.x, b_marker.position.y, b_marker.position.z;
+			local cam_x, cam_y, cam_z = getCameraMatrix();
+			if getDistanceBetweenPoints3D(cam_x, cam_y, cam_z, x, y, z) < 15 then
+				local screen_x, screen_y = getScreenFromWorldPosition(x, y, z + 1.6);
+				if screen_x then
 					local scale = 1920 / screen_width;
 					local width = 80 / scale;
-					dxDrawImage(scX - width / 2, scY - screen_height / 10, width, 80, "files/business.png");
+					dxDrawImage(screen_x - width / 2, screen_y - screen_height / 10, width, 80, "files/business.png");
 				end
 				if settings["business.showBusinessInfoOnMarker"] then
-					scX, scY = getScreenFromWorldPosition(posX, posY, posZ + 1.4);
-					if scX then
+					screen_x, screen_y = getScreenFromWorldPosition(x, y, z + 1.4);
+					if screen_x then
 						if #tostring(id) == 1 then id = "0"..tostring(id) end
-						dxDrawFramedText("ID: #"..id, scX, scY, scX, scY, tocolor(255, 255, 255, 255), 1.0, "default-bold", "center", "center", false, false, false);
+						dxDrawFramedText("ID: #"..id, screen_x, screen_y, screen_x, screen_y, tocolor(255, 255, 255, 255), 1.0, "default-bold", "center", "center", false, false, false);
 					end
-					scX, scY = getScreenFromWorldPosition(posX, posY, posZ + 1.2);
-					if scX then
-						dxDrawFramedText("Name: "..name, scX, scY, scX, scY, tocolor(255, 255, 255, 255), 1.0, "default-bold", "center", "center", false, false, false);
+					screen_x, screen_y = getScreenFromWorldPosition(x, y, z + 1.2);
+					if screen_x then
+						dxDrawFramedText("Name: "..name, screen_x, screen_y, screen_x, screen_y, tocolor(255, 255, 255, 255), 1.0, "default-bold", "center", "center", false, false, false);
 					end
-					scX, scY = getScreenFromWorldPosition(posX, posY, posZ + 1.0);
-					if scX then
-						dxDrawFramedText("Owner: "..owner, scX, scY, scX, scY, tocolor(255, 255, 255, 255), 1.0, "default-bold", "center", "center", false, false, false);
+					screen_x, screen_y = getScreenFromWorldPosition(x, y, z + 1.0);
+					if screen_x then
+						dxDrawFramedText("Owner: "..owner, screen_x, screen_y, screen_x, screen_y, tocolor(255, 255, 255, 255), 1.0, "default-bold", "center", "center", false, false, false);
 					end
-					scX, scY = getScreenFromWorldPosition(posX, posY, posZ + 0.8);
-					if scX then
-						dxDrawFramedText("Cost: $"..cost, scX, scY, scX, scY, tocolor(255, 255, 255, 255), 1.0, "default-bold", "center", "center", false, false, false);
+					screen_x, screen_y = getScreenFromWorldPosition(x, y, z + 0.8);
+					if screen_x then
+						dxDrawFramedText("Cost: $"..cost, screen_x, screen_y, screen_x, screen_y, tocolor(255, 255, 255, 255), 1.0, "default-bold", "center", "center", false, false, false);
 					end
-					scX, scY = getScreenFromWorldPosition(posX, posY, posZ + 0.6);
-					if scX then
-						dxDrawFramedText("Payout: $"..payout, scX, scY, scX, scY, tocolor(255, 255, 255, 255), 1.0, "default-bold", "center", "center", false, false, false);
+					screen_x, screen_y = getScreenFromWorldPosition(x, y, z + 0.6);
+					if screen_x then
+						dxDrawFramedText("Payout: $"..payout, screen_x, screen_y, screen_x, screen_y, tocolor(255, 255, 255, 255), 1.0, "default-bold", "center", "center", false, false, false);
 					end
-					scX, scY = getScreenFromWorldPosition(posX, posY, posZ + 0.4);
-					if scX then
-						dxDrawFramedText("Payout Time: "..payoutOTime.." "..payoutUnit, scX, scY, scX, scY, tocolor(255, 255, 255, 255), 1.0, "default-bold", "center", "center", false, false, false);
+					screen_x, screen_y = getScreenFromWorldPosition(x, y, z + 0.4);
+					if screen_x then
+						dxDrawFramedText("Payout Time: "..payout_otime.." "..payout_unit, screen_x, screen_y, screen_x, screen_y, tocolor(255, 255, 255, 255), 1.0, "default-bold", "center", "center", false, false, false);
 					end
-					scX, scY = getScreenFromWorldPosition(posX, posY, posZ + 0.2);
-					if scX then
-						dxDrawFramedText("Bank: $"..bank, scX, scY, scX, scY, tocolor(255, 255, 255, 255), 1.0, "default-bold", "center", "center", false, false, false);
+					screen_x, screen_y = getScreenFromWorldPosition(x, y, z + 0.2);
+					if screen_x then
+						dxDrawFramedText("Bank: $"..bank, screen_x, screen_y, screen_x, screen_y, tocolor(255, 255, 255, 255), 1.0, "default-bold", "center", "center", false, false, false);
 					end
 				end
 			end
@@ -90,10 +90,10 @@ addEventHandler("client:hideInstructions", root,
 
 addEvent("business.client.showBusinessWindow", true);
 addEventHandler("business.client.showBusinessWindow", root,
-	function(bMarker, isOwner, isAdmin)
-		local bData = bMarker:getData("bData");
-		local id, name, owner, cost, payout, payout_time, payout_otime, payout_unit, bank, timer = unpack(bData);
-		local posX, posY, posZ = bMarker.position;
+	function(b_marker, is_owner, is_admin)
+		local b_data = b_marker:getData("b_data");
+		local id, name, owner, cost, payout, payout_time, payout_otime, payout_unit, bank, timer = unpack(b_data);
+		local x, y, z = b_marker.position;
 		if #tostring(id) == 1 then id = "0"..tostring(id) end
 		gui.b.window.text = name;
 		gui.b.label.id.text = "ID: #"..id;
@@ -102,10 +102,10 @@ addEventHandler("business.client.showBusinessWindow", root,
 		gui.b.label.cost.text = "Cost: $"..cost;
 		gui.b.label.payout.text = "Payout: $"..payout;
 		gui.b.label.payout_time.text = "Payout Time: "..payout_otime.." "..payout_unit;
-		gui.b.label.location.text = "Location: "..getZoneName(posX, posY, posZ, false).."("..getZoneName(posX, posY, posZ, true)..")";
+		gui.b.label.location.text = "Location: "..getZoneName(x, y, z, false).."("..getZoneName(x, y, z, true)..")";
 		gui.b.label.bank.text = "Bank: $"..bank;
 
-		if isAdmin and isOwner then
+		if is_admin and is_owner then
 			gui.b.tab.action.enabled = true;
 			gui.b.button.sell.enabled = true;
 			gui.b.button.deposit.enabled = true;
@@ -115,7 +115,7 @@ addEventHandler("business.client.showBusinessWindow", root,
 			gui.b.button.set_cost.enabled = true;
 			gui.b.button.set_bank.enabled = true;
 			gui.b.button.buy.enabled = false;
-		elseif isAdmin and not isOwner and owner ~= "For Sale" then
+		elseif is_admin and not is_owner and owner ~= "For Sale" then
 			gui.b.tab.action.enabled = true;
 			gui.b.button.set_name.enabled = true;
 			gui.b.button.set_owner.enabled = true;
@@ -125,7 +125,7 @@ addEventHandler("business.client.showBusinessWindow", root,
 			gui.b.button.buy.enabled = false;
 			gui.b.button.deposit.enabled = false;
 			gui.b.button.withdraw.enabled = false;
-		elseif isAdmin and not isOwner and owner == "For Sale" then
+		elseif is_admin and not is_owner and owner == "For Sale" then
 			gui.b.tab.action.enabled = true;
 			gui.b.button.set_name.enabled = true;
 			gui.b.button.set_owner.enabled = true;
@@ -135,7 +135,7 @@ addEventHandler("business.client.showBusinessWindow", root,
 			gui.b.button.buy.enabled = true;
 			gui.b.button.deposit.enabled = false;
 			gui.b.button.withdraw.enabled = false;
-		elseif not isAdmin and isOwner then
+		elseif not is_admin and is_owner then
 			gui.b.tab.action.enabled = true;
 			gui.b.button.set_name.enabled = false;
 			gui.b.button.set_owner.enabled = false;
@@ -145,10 +145,10 @@ addEventHandler("business.client.showBusinessWindow", root,
 			gui.b.button.deposit.enabled = true;
 			gui.b.button.withdraw.enabled = true;
 			gui.b.button.buy.enabled = false;
-		elseif not isAdmin and not isOwner and owner ~= "For Sale" then
+		elseif not is_admin and not is_owner and owner ~= "For Sale" then
 			gui.b.tab.action.enabled = false;
 			gui.b.tab_panel:setSelectedTab(gui.b.tab.info);
-		elseif not isAdmin and not isOwner and owner == "For Sale" then
+		elseif not is_admin and not is_owner and owner == "For Sale" then
 			gui.b.tab.action.enabled = true;
 			gui.b.button.set_name.enabled = false;
 			gui.b.button.set_owner.enabled = false;

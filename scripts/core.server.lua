@@ -8,33 +8,33 @@ end
 
 addEventHandler("onResourceStart", resourceRoot, function()
 	database = Connection("sqlite", "files/business.db");
-	database:exec("CREATE TABLE IF NOT EXISTS business(bID INT, bName TEXT, bOwner TEXT, bCost INT, bPos TEXt, bPayout INT, bPayoutTime INT, bPayoutOTime INT, bPayoutUnit TEXT, bPayoutCurTime INT, bBank INT)");
+	database:exec("CREATE TABLE IF NOT EXISTS business(id INT, name TEXT, owner TEXT, cost INT, pos TEXT, payout INT, payout_time INT, payout_otime INT, payout_unit TEXT, payout_cur_time INT, bank INT)");
 	database:query(dbCreateBusinessesCallback,  "SELECT * FROM business");
 end);
 
 function dbCreateBusinessesCallback(query_handle)
 	local sql = query_handle:poll(0);
 	if (sql and #sql > 0) then
-		for index, sqlRow in ipairs(sql) do
-			local pos = split(sqlRow["bPos"], ",");
+		for index, row in ipairs(sql) do
+			local pos = split(row["pos"], ",");
 			local b_marker = Marker(pos[1], pos[2], pos[3], "cylinder", 1.5, settings["business.markerColor"][1], settings["business.markerColor"][2], settings["business.markerColor"][3], settings["business.markerColor"][4]);
 			b_marker.interior = pos[4];
 			b_marker.dimension = pos[5];
 			if (settings["business.blip"] ~= false) then
-				if (sqlRow["bOwner"] == "For Sale") then
-					local bBlip = Blip.createAttachedTo(b_marker, settings["business.blip"], 2, 255, 0, 0, 255, 0, 100.0);
-					bBlip.interior = pos[4];
-					bBlip.dimension = pos[5];
+				if (row["owner"] == "For Sale") then
+					local b_blip = Blip.createAttachedTo(b_marker, settings["business.blip"], 2, 255, 0, 0, 255, 0, 100.0);
+					b_blip.interior = pos[4];
+					b_blip.dimension = pos[5];
 				else
-					local bBlip = Blip.createAttachedTo(b_marker, settings["business.blip"], 2, 255, 0, 0, 255, 0, 100.0);
-					bBlip.interior = pos[4];
-					bBlip.dimension = pos[5];
+					local b_blip = Blip.createAttachedTo(b_marker, settings["business.blip"], 2, 255, 0, 0, 255, 0, 100.0);
+					b_blip.interior = pos[4];
+					b_blip.dimension = pos[5];
 				end
 			end
 			addEventHandler("onMarkerHit", b_marker, onBusinessMarkerHit);
 			addEventHandler("onMarkerLeave", b_marker, onBusinessMarkerLeave);
-			local timer = Timer(businessPayout, sqlRow["bPayoutCurTime"] , 1, b_marker);
-			b_marker:setData("bData", {sqlRow["bID"], sqlRow["bName"], sqlRow["bOwner"], sqlRow["bCost"], sqlRow["bPayout"], sqlRow["bPayoutTime"], sqlRow["bPayoutOTime"], sqlRow["bPayoutUnit"], sqlRow["bBank"], timer});
+			local timer = Timer(businessPayout, row["payout_cur_time"] , 1, b_marker);
+			b_marker:setData("b_data", {row["id"], row["name"], row["owner"], row["cost"], row["payout"], row["payout_time"], row["payout_otime"], row["payout_unit"], row["bank"], timer});
 		end
 	end
 end
@@ -73,53 +73,53 @@ addEventHandler("server:outputMessage", root, function(message, r, g, b)
 end);
 
 addEvent("business.server.createBusiness", true);
-addEventHandler("business.server.createBusiness", root, function(posX, posY, posZ, interior, dimension, name, cost, payout, payoutTime, payoutUnit)
-	database:query(dbCreateBusinessCallback,  {client, posX, posY, posZ, interior, dimension, name, cost, payout, payoutTime, payoutUnit}, "SELECT * FROM business");
+addEventHandler("business.server.createBusiness", root, function(x, y, z, interior, dimension, name, cost, payout, payout_time, payout_unit)
+	database:query(dbCreateBusinessCallback,  {client, x, y, z, interior, dimension, name, cost, payout, payout_time, payout_unit}, "SELECT * FROM business");
 end);
 
-function dbCreateBusinessCallback(query_handle, client, posX, posY, posZ, interior, dimension, name, cost, payout, payoutTime, payoutUnit)
+function dbCreateBusinessCallback(query_handle, client, x, y, z, interior, dimension, name, cost, payout, payout_time, payout_unit)
 	local sql = query_handle:poll(0);
 	if (sql) then
 		local id;
 		if (#sql > 0) then
-			id = sql[#sql]["bID"] + 1;
+			id = sql[#sql]["id"] + 1;
 		else
 			id = 1;
 		end
 		local unit;
-		if (payoutUnit == "Seconds") then
+		if (payout_unit == "Seconds") then
 			unit = 1000;
-		elseif (payoutUnit == "Minutes") then
+		elseif (payout_unit == "Minutes") then
 			unit = 60000;
-		elseif (payoutUnit == "Hours") then
+		elseif (payout_unit == "Hours") then
 			unit = 3600000;
-		elseif (payoutUnit == "Days") then
+		elseif (payout_unit == "Days") then
 			unit = 86400000;
 		end
 
-		posX = tonumber(posX);
-		posY = tonumber(posY);
-		posZ = tonumber(posZ);
+		x = tonumber(x);
+		y = tonumber(y);
+		z = tonumber(z);
 		interior = tonumber(interior);
 		dimension = tonumber(dimension);
 		cost = tonumber(cost);
 		payout = tonumber(payout);
-		payoutTime = tonumber(payoutTime);
+		payout_time = tonumber(payout_time);
 
-		posZ = posZ - 1;
+		z = z - 1;
 
-		database:exec("INSERT INTO business(bID,bName,bOwner,bCost,bPos,bPayout,bPayoutTime,bPayoutOTime,bPayoutUnit,bPayoutCurTime,bBank) VALUES(?,?,?,?,?,?,?,?,?,?,?)", id, name, "For Sale", cost, posX..","..posY..","..posZ..","..interior..","..dimension, payout, payoutTime * unit, payoutTime, payoutUnit, payoutTime * unit, 0);
+		database:exec("INSERT INTO business(id,name,owner,cost,pos,payout,payout_time,payout_otime,payout_unit,payout_cur_time,bank) VALUES(?,?,?,?,?,?,?,?,?,?,?)", id, name, "For Sale", cost, x..","..y..","..z..","..interior..","..dimension, payout, payout_time * unit, payout_time, payout_unit, payout_time * unit, 0);
 
-		local b_marker = Marker(posX, posY, posZ, "cylinder", 1.5, settings["business.markerColor"][1], settings["business.markerColor"][2], settings["business.markerColor"][3], settings["business.markerColor"][4]);
+		local b_marker = Marker(x, y, z, "cylinder", 1.5, settings["business.markerColor"][1], settings["business.markerColor"][2], settings["business.markerColor"][3], settings["business.markerColor"][4]);
 		b_marker.interior = interior;
 		b_marker.dimension = dimension;
 		if (settings["business.blip"] ~= false) then
-			local bBlip = Blip.createAttachedTo(b_marker, settings["business.blip"], 2, 255, 0, 0, 255, 0, 100.0);
-			bBlip.interior = interior;
-			bBlip.dimension = dimension;
+			local b_blip = Blip.createAttachedTo(b_marker, settings["business.blip"], 2, 255, 0, 0, 255, 0, 100.0);
+			b_blip.interior = interior;
+			b_blip.dimension = dimension;
 		end
-		local timer = Timer(businessPayout, payoutTime * unit , 1, b_marker);
-		b_marker:setData("bData", {id, name, "For Sale", cost, payout, payoutTime * unit, payoutTime, payoutUnit, 0, timer});
+		local timer = Timer(businessPayout, payout_time * unit , 1, b_marker);
+		b_marker:setData("b_data", {id, name, "For Sale", cost, payout, payout_time * unit, payout_time, payout_unit, 0, timer});
 		addEventHandler("onMarkerHit", b_marker, onBusinessMarkerHit);
 		addEventHandler("onMarkerLeave", b_marker, onBusinessMarkerLeave);
 		if (#tostring(id) == 1) then id = "0".. tostring(id) end
@@ -142,11 +142,11 @@ function onBusinessMarkerLeave(hElement, mDim)
 end
 
 function businessPayout(b_marker)
-	local bData = b_marker:getData("bData");
-	local id, name, owner, cost, payout, payoutTime, payoutOTime, payoutUnit, bank, timer = unpack(bData);
+	local b_data = b_marker:getData("b_data");
+	local id, name, owner, cost, payout, payout_time, payout_otime, payout_unit, bank, timer = unpack(b_data);
 	if (owner ~= "For Sale") then
 		bank = bank + payout;
-		database:exec("UPDATE business SET bBank = ? WHERE bID = ?", bank, id);
+		database:exec("UPDATE business SET bank = ? WHERE id = ?", bank, id);
 		if (settings["business.informPlayerForPayout"]) then
 			local account = Account(owner);
 			if (account) then
@@ -157,20 +157,20 @@ function businessPayout(b_marker)
 			end
 		end
 	end
-	timer = Timer(businessPayout, payoutTime, 1, b_marker);
-	b_marker:setData("bData", {id, name, owner, cost, payout, payoutTime, payoutOTime, payoutUnit, bank, timer});
+	timer = Timer(businessPayout, payout_time, 1, b_marker);
+	b_marker:setData("b_data", {id, name, owner, cost, payout, payout_time, payout_otime, payout_unit, bank, timer});
 end
 
 addEventHandler("onResourceStop", resourceRoot, function()
 	for index, b_marker in ipairs(Element.getAllByType("marker", resourceRoot)) do
-		local bData = b_marker:getData("bData");
-		local id, name, owner, cost, payout, payoutTime, payoutOTime, payoutUnit, bank, timer = unpack(bData);
+		local b_data = b_marker:getData("b_data");
+		local id, name, owner, cost, payout, payout_time, payout_otime, payout_unit, bank, timer = unpack(b_data);
 		if (timer and timer:isValid()) then
 			local left = timer:getDetails();
 			if (left >= 50) then
-				database:exec("UPDATE business SET bPayoutCurTime = ? WHERE bID = ?", left, id);
+				database:exec("UPDATE business SET payout_cur_time = ? WHERE id = ?", left, id);
 			else
-				database:exec("UPDATE business SET bPayoutCurTime = ? WHERE bID = ?", payoutTime, id);
+				database:exec("UPDATE business SET payout_cur_time = ? WHERE id = ?", payout_time, id);
 			end
 		end
 	end
@@ -194,8 +194,8 @@ end);
 function onPlayerAttemptToOpenBusiness(player)
 	for index, b_marker in ipairs(Element.getAllByType("marker", resourceRoot)) do
 		if (player:isInMarker(b_marker)) then
-			local bData = b_marker:getData("bData");
-			local id, name, owner, cost, payout, payoutTime, payoutOTime, payoutUnit, bank, timer = unpack(bData);
+			local b_data = b_marker:getData("b_data");
+			local id, name, owner, cost, payout, payout_time, payout_otime, payout_unit, bank, timer = unpack(b_data);
 			triggerClientEvent(player, "business.client.showBusinessWindow", player, b_marker, getAccountName(getPlayerAccount(player)) == owner, ACL.hasObjectPermissionTo(player, "function.banPlayer"));
 			break;
 		end
@@ -216,13 +216,13 @@ addEventHandler("business.server.buy", root, function()
 	if (not account or account:isGuest()) then return; end
 	local b_marker = client:getMarker();
 	if (not isElement(b_marker)) then return; end
-	local b_data = b_marker:getData("bData");
+	local b_data = b_marker:getData("b_data");
 	local id, name, owner, cost, payout, payout_time, payout_otime, payout_unit, bank, timer = unpack(b_data);
 	if (owner ~= "For Sale") then
 		client:outputMessage("Business: This business is owned", 255, 0, 0);
 		return;
 	end
-	database:query(dbBuyBusinessCallback, {client, b_marker, id, name, owner, cost, payout, payout_time, payout_otime, payout_unit, bank, timer}, "SELECT * FROM business WHERE bOwner = ?", account.name);
+	database:query(dbBuyBusinessCallback, {client, b_marker, id, name, owner, cost, payout, payout_time, payout_otime, payout_unit, bank, timer}, "SELECT * FROM business WHERE owner = ?", account.name);
 end);
 
 addEvent("business.server.sell", true);
@@ -231,12 +231,12 @@ addEventHandler("business.server.sell", root, function()
 	if (not account or account:isGuest()) then return; end
 	local b_marker = client:getMarker();
 	if (not isElement(b_marker)) then return; end
-	local b_data = b_marker:getData("bData");
+	local b_data = b_marker:getData("b_data");
 	local id, name, owner, cost, payout, payout_time, payout_otime, payout_unit, bank, timer = unpack(b_data);
 	if (owner ~= account.name) then
 		if (ACL.hasObjectPermissionTo(client, "function.banPlayer")) then
-			database:exec("UPDATE business SET bOwner = ? WHERE bID = ?", "For Sale", id);
-			b_marker:setData("bData", {id, name, "For Sale", cost, payout, payout_time, payout_otime, payout_unit, bank, timer});
+			database:exec("UPDATE business SET owner = ? WHERE id = ?", "For Sale", id);
+			b_marker:setData("b_data", {id, name, "For Sale", cost, payout, payout_time, payout_otime, payout_unit, bank, timer});
 			client:outputMessage("Business: You have successfully sold this business", 0, 255, 0);
 			return;
 		else
@@ -244,10 +244,10 @@ addEventHandler("business.server.sell", root, function()
 			return;
 		end
 	end
-	database:exec("UPDATE business SET bOwner = ?, bBank = ? WHERE bID = ?", "For Sale", 0, id);
+	database:exec("UPDATE business SET owner = ?, bank = ? WHERE id = ?", "For Sale", 0, id);
 	client:giveMoney(tonumber(("%.f"):format(cost / 2)));
 	client:giveMoney(bank);
-	b_marker:setData("bData", {id, name, "For Sale", cost, payout, payout_time, payout_otime, payout_unit, 0});
+	b_marker:setData("b_data", {id, name, "For Sale", cost, payout, payout_time, payout_otime, payout_unit, 0});
 	client:outputMessage("Business: You have successfully sold this business, all the money in the bank have been paid to you.", 0, 255, 0);
 end);
 
@@ -257,7 +257,7 @@ addEventHandler("business.server.deposit", root, function(amount)
 	if (not account or account:isGuest()) then return; end
 	local b_marker = client:getMarker();
 	if (not isElement(b_marker)) then return; end
-	local b_data = b_marker:getData("bData");
+	local b_data = b_marker:getData("b_data");
 	local id, name, owner, cost, payout, payout_time, payout_otime, payout_unit, bank, timer = unpack(b_data);
 	if (not tonumber(amount)) then client:outputMessage("Business: Invalid amount", 255, 0, 0); return; end
 	if (owner ~= account.name) then
@@ -268,9 +268,9 @@ addEventHandler("business.server.deposit", root, function(amount)
 		client:outputMessage("Business: You don't have enough money", 255, 0, 0);
 		return;
 	end
-	database:exec("UPDATE business SET bBank = ? WHERE bID = ?", bank + amount, id);
+	database:exec("UPDATE business SET bank = ? WHERE id = ?", bank + amount, id);
 	client:takeMoney(amount);
-	b_marker:setData("bData", {id, name, owner, cost, payout, payout_time, payout_otime, payout_unit, bank + amount, timer});
+	b_marker:setData("b_data", {id, name, owner, cost, payout, payout_time, payout_otime, payout_unit, bank + amount, timer});
 	client:outputMessage("Business: You have successfully deposited $"..amount.." to the business", 0, 255, 0);
 end);
 
@@ -280,7 +280,7 @@ addEventHandler("business.server.withdraw", root, function(amount)
 	if (not account or account:isGuest()) then return; end
 	local b_marker = client:getMarker();
 	if (not isElement(b_marker)) then return; end
-	local b_data = b_marker:getData("bData");
+	local b_data = b_marker:getData("b_data");
 	local id, name, owner, cost, payout, payout_time, payout_otime, payout_unit, bank, timer = unpack(b_data);
 	if (not tonumber(amount)) then client:outputMessage("Business: Invalid amount", 255, 0, 0); return; end
 	if (owner ~= account.name) then
@@ -291,9 +291,9 @@ addEventHandler("business.server.withdraw", root, function(amount)
 		client:outputMessage("Business: You don't have that much in the business bank", 255, 0, 0);
 		return;
 	end
-	database:exec("UPDATE business SET bBank = ? WHERE bID = ?", bank - amount, id);
+	database:exec("UPDATE business SET bank = ? WHERE id = ?", bank - amount, id);
 	client:giveMoney(amount);
-	b_marker:setData("bData", {id, name, owner, cost, payout, payout_time, payout_otime, payout_unit, bank - amount, timer});
+	b_marker:setData("b_data", {id, name, owner, cost, payout, payout_time, payout_otime, payout_unit, bank - amount, timer});
 	client:outputMessage("Business: You have successfully withdrew $"..amount.." from the business", 0, 255, 0);
 end);
 
@@ -309,10 +309,10 @@ addEventHandler("business.server.setName", root, function(new_name)
 	end
 	local b_marker = client:getMarker();
 	if (not isElement(b_marker)) then return; end
-	local b_data = b_marker:getData("bData");
+	local b_data = b_marker:getData("b_data");
 	local id, name, owner, cost, payout, payout_time, payout_otime, payout_unit, bank, timer = unpack(b_data);
-	database:exec("UPDATE business SET bName = ? WHERE bID = ?", new_name, id);
-	b_marker:setData("bData", {id, new_name, owner, cost, payout, payout_time, payout_otime, payout_unit, bank, timer});
+	database:exec("UPDATE business SET name = ? WHERE id = ?", new_name, id);
+	b_marker:setData("b_data", {id, new_name, owner, cost, payout, payout_time, payout_otime, payout_unit, bank, timer});
 	client:outputMessage("Business: You have successfully renamed the business", 0, 255, 0);
 end);
 
@@ -324,10 +324,10 @@ addEventHandler("business.server.setOwner", root, function(new_owner)
 	end
 	local b_marker = client:getMarker();
 	if (not isElement(b_marker)) then return; end
-	local b_data = b_marker:getData("bData");
+	local b_data = b_marker:getData("b_data");
 	local id, name, owner, cost, payout, payout_time, payout_otime, payout_unit, bank, timer = unpack(b_data);
-	database:exec("UPDATE business SET bOwner = ? WHERE bID = ?", new_owner, id);
-	b_marker:setData("bData", {id, name, new_owner, cost, payout, payout_time, payout_otime, payout_unit, bank, timer});
+	database:exec("UPDATE business SET owner = ? WHERE id = ?", new_owner, id);
+	b_marker:setData("b_data", {id, name, new_owner, cost, payout, payout_time, payout_otime, payout_unit, bank, timer});
 	client:outputMessage("Business: You have successfully changed the business owner", 0, 255, 0);
 end);
 
@@ -344,10 +344,10 @@ addEventHandler("business.server.setCost", root, function(amount)
 	end
 	local b_marker = client:getMarker();
 	if (not isElement(b_marker)) then return; end
-	local b_data = b_marker:getData("bData");
+	local b_data = b_marker:getData("b_data");
 	local id, name, owner, cost, payout, payout_time, payout_otime, payout_unit, bank, timer = unpack(b_data);
-	database:exec("UPDATE business SET bCost = ? WHERE bID = ?", amount, id);
-	b_marker:setData("bData", {id, name, owner, amount, payout, payout_time, payout_otime, payout_unit, bank, timer});
+	database:exec("UPDATE business SET cost = ? WHERE id = ?", amount, id);
+	b_marker:setData("b_data", {id, name, owner, amount, payout, payout_time, payout_otime, payout_unit, bank, timer});
 	client:outputMessage("Business: You have successfully changed the business cost", 0, 255, 0);
 end);
 
@@ -364,10 +364,10 @@ addEventHandler("business.server.setBank", root, function(amount)
 	end
 	local b_marker = client:getMarker();
 	if (not isElement(b_marker)) then return; end
-	local b_data = b_marker:getData("bData");
+	local b_data = b_marker:getData("b_data");
 	local id, name, owner, cost, payout, payout_time, payout_otime, payout_unit, bank, timer = unpack(b_data);
-	database:exec("UPDATE business SET bBank = ? WHERE bID = ?", amount, id);
-	b_marker:setData("bData", {id, name, owner, cost, payout, payout_time, payout_otime, payout_unit, amount, timer});
+	database:exec("UPDATE business SET bank = ? WHERE id = ?", amount, id);
+	b_marker:setData("b_data", {id, name, owner, cost, payout, payout_time, payout_otime, payout_unit, amount, timer});
 	client:outputMessage("Business: You have successfully changed the business bank amount", 0, 255, 0);
 end);
 
@@ -379,10 +379,10 @@ addEventHandler("business.server.destroy", root, function()
 	end
 	local b_marker = client:getMarker();
 	if (not isElement(b_marker)) then return; end
-	local b_data = b_marker:getData("bData");
+	local b_data = b_marker:getData("b_data");
 	local id, name, owner, cost, payout, payout_time, payout_otime, payout_unit, bank, timer = unpack(b_data);
 	if (timer and timer:isValid()) then timer:destroy() end
-	database:exec("DELETE FROM business WHERE bID = ?", id);
+	database:exec("DELETE FROM business WHERE id = ?", id);
 	b_marker:destroyAttachedBlips();
 	b_marker:destroy();
 	client:outputMessage("Business: You have successfully destroyed the business", 0, 255, 0);
@@ -390,7 +390,7 @@ addEventHandler("business.server.destroy", root, function()
 	database:query(dbReOrderBusinessesCallback,  "SELECT * FROM business");
 end);
 
-function dbBuyBusinessCallback(query_handle, source, b_marker, id, name, owner, cost, payout, payoutTime, payoutOTime, payoutUnit, bank, timer)
+function dbBuyBusinessCallback(query_handle, source, b_marker, id, name, owner, cost, payout, payout_time, payout_otime, payout_unit, bank, timer)
 	local sql = query_handle:poll(0);
 	if (#sql == settings["business.ownedBusinesses"]) then
 		source:outputMessage("Business: You already own "..#sql.." businesses which is the maximum amount", 255, 0, 0);
@@ -398,36 +398,36 @@ function dbBuyBusinessCallback(query_handle, source, b_marker, id, name, owner, 
 	end
 	local money = source.money;
 	if (money < cost) then source:outputMessage("Business: You don't have enough money", 255, 0, 0) return end
-	database:exec("UPDATE business SET bOwner = ? WHERE bID = ?", source.account.name, id);
+	database:exec("UPDATE business SET owner = ? WHERE id = ?", source.account.name, id);
 	source:takeMoney(cost);
 	source:outputMessage("Business: You have successfully bought this business", 0, 255, 0);
-	b_marker:setData("bData", {id, name, source.account.name, cost, payout, payoutTime, payoutOTime, payoutUnit, bank, timer});
+	b_marker:setData("b_data", {id, name, source.account.name, cost, payout, payout_time, payout_otime, payout_unit, bank, timer});
 end
 
 function dbReOrderBusinessesCallback(query_handle)
 	local sql = query_handle:poll(0);
 	if (sql and #sql > 0) then
-		for index, sqlRow in ipairs(sql) do
-			database:exec("UPDATE business SET bID = ? WHERE bID = ?", index, sqlRow["bID"]);
+		for index, row in ipairs(sql) do
+			database:exec("UPDATE business SET id = ? WHERE id = ?", index, row["id"]);
 		end
 		for index, b_marker in ipairs(Element.getAllByType("marker", resourceRoot)) do
-			database:query(dbUpdateBusinessesIDsCallback, {b_marker, index}, "SELECT bID FROM business WHERE bID = ?", index);
+			database:query(dbUpdateBusinessesIDsCallback, {b_marker, index}, "SELECT id FROM business WHERE id = ?", index);
 		end
 	end
 end
 
 function dbUpdateBusinessesIDsCallback(query_handle, b_marker, index)
 	local sql = query_handle:poll(0);
-	local bData = b_marker:getData("bData");
-	local id, name, owner, cost, payout, payoutTime, payoutOTime, payoutUnit, bank, timer = unpack(bData);
-	b_marker:setData("bData", {index, name, owner, cost, payout, payoutTime, payoutOTime, payoutUnit, bank, timer});
+	local b_data = b_marker:getData("b_data");
+	local id, name, owner, cost, payout, payout_time, payout_otime, payout_unit, bank, timer = unpack(b_data);
+	b_marker:setData("b_data", {index, name, owner, cost, payout, payout_time, payout_otime, payout_unit, bank, timer});
 end
 
 function Element:destroyAttachedBlips()
 	if (not self) then return; end
-	for index, attachedElement in pairs(self:getAttachedElements()) do
-		if (attachedElement and attachedElement.isElement) then
-			attachedElement:destroy();
+	for index, element in pairs(self:getAttachedElements()) do
+		if (element and element.isElement) then
+			element:destroy();
 		end
 	end
 end
