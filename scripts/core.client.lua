@@ -16,37 +16,6 @@ function outputMessage(message, r, g, b)
 	triggerServerEvent("server:outputMessage", localPlayer, message, r, g, b);
 end
 
--- addEventHandler("onClientMouseEnter", root, function() is_cursor_over_gui = true end);
--- addEventHandler('onClientMouseLeave', root, function() is_cursor_over_gui = false end);
-
--- addEventHandler("onClientRender", root,
--- 	function()
--- 		if not isCursorShowing() then return; end
--- 		if is_cursor_over_gui then return; end
--- 		if not gui.cb.window.visible then return; end
--- 		if gui.cbc.window.visible then return; end
--- 		local csX, csY = getCursorPosition();
--- 		if csX and csY then
--- 			dxDrawFramedText("RMB to show/hide cursor", screen_width  * csX + 10, screen_height  * csY - 5, 100, 50, tocolor(255, 255, 255, 255), 1.0, "default-bold", "left", "top", false, false, true);
--- 		end
--- 	end
--- );
-
--- bindKey("mouse2", "up",
--- 	function()
--- 		if not gui.cb.window.visible then return; end
--- 		if gui.cbc.window.visible then return; end
--- 		if isCursorShowing() then
--- 			if is_cursor_over_gui then return; end
--- 			gui.cb.window.alpha = 0.1;
--- 			_showCursor(false);
--- 		else
--- 			gui.cb.window.alpha = 1;
--- 			_showCursor(true);
--- 		end
--- 	end
--- );
-
 addEventHandler("onClientRender", root,
 	function()
 		for index, bMarker in ipairs(Element.getAllByType("marker", resourceRoot)) do
