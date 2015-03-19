@@ -117,7 +117,19 @@ addEventHandler("onClientResourceStart", resourceRoot, function()
 			if zone == "Unknown" then zone = "the middle of no where" end;
 			local interior = tonumber(gettok(intdim, 1, ","));
 			local dimension = tonumber(gettok(intdim, 2, ","));
-			dxPrompt("Are you sure you want to create business '"..name.."' in "..zone, createBusiness);
+			dxPrompt("Are you sure you want to create business '"..name.."' in "..zone, function()
+				Sound("files/cash.mp3", false);
+				showCursor(false);
+				local x, y, z, intdim = gui.cb.edit.posx.text, gui.cb.edit.posy.text, gui.cb.edit.posz.text, gui.cb.edit.intdim.text;
+				local interior, dimension = unpack(split(intdim, ","));
+				local name = gui.cb.edit.name.text;
+				local cost = gui.cb.edit.cost.text;
+				local payout = gui.cb.edit.payout.text;
+				local payout_time, payout_unit = gui.cb.edit.payout_time.text, gui.cb.unit:getItemText(gui.cb.unit:getSelected());
+				triggerServerEvent("business.server.createBusiness", root, x, y, z, interior, dimension, name, cost, payout, payout_time, payout_unit);
+				gui.cb.button.clear.func("up");
+				gui.cb.window.visible = false;
+			end);
 		else
 			outputMessage("BUSINESS: The data isn't correct, please correct it", 255, 0, 0);
 		end
@@ -275,32 +287,3 @@ addEventHandler("onClientResourceStart", resourceRoot, function()
 		end);
 	end;
 end);
-
-function createBusiness()
-	Sound("files/cash.mp3", false);
-	showCursor(false);
-	local x, y, z, intdim = gui.cb.edit.posx.text, gui.cb.edit.posy.text, gui.cb.edit.posz.text, gui.cb.edit.intdim.text;
-	local interior, dimension = unpack(split(intdim, ","));
-	local name = gui.cb.edit.name.text;
-	local cost = gui.cb.edit.cost.text;
-	local payout = gui.cb.edit.payout.text;
-	local payout_time, payout_unit = gui.cb.edit.payout_time.text, gui.cb.unit:getItemText(gui.cb.unit:getSelected());
-	triggerServerEvent("business.server.createBusiness", root, x, y, z, interior, dimension, name, cost, payout, payout_time, payout_unit);
-	gui.cb.button.clear.func("up");
-	gui.cb.window.visible = false;
-end
-
--- gui.cb.button.pickup.func = function(button, state)
--- 	if (button ~= "left" or state ~= "up") then return; end
-	
--- end
-
--- gui.cb.button.pickup.func = function(button, state)
--- 	if (button ~= "left" or state ~= "up") then return; end
-	
--- end
-
--- gui.cb.button.pickup.func = function(button, state)
--- 	if (button ~= "left" or state ~= "up") then return; end
-	
--- end
