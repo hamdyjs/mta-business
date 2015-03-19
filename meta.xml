@@ -15,13 +15,13 @@
 	<oop>true</oop>
 
 	<settings>
-		<setting name = "business.infoMessagesType" value = "dx" accept = "dx, chatbox" description = "The type if info messages (dx - dxDrawText is used to output info messages) (chatbox - outputChatBox is used)" />
-		<setting name = "business.markerColor" value = "[[0, 153, 0, 255]]" accept = "RGBA Color Format" description = "The color of the business marker RGBA Format" />
-		<setting name = "business.informPlayerForPayout" value = "[false]" accept = "true, false" description = "Wether to inform the player for the payout, or not" />
+		<setting name = "business.info_messages_type" value = "dx" accept = "dx, chatbox" description = "The type of info messages (dx - dxDrawText is used to output info messages) (chatbox - outputChatBox is used)" />
+		<setting name = "business.marker_color" value = "[[0, 153, 0, 255]]" accept = "RGBA Color Format" description = "The color of the business marker RGBA Format" />
+		<setting name = "business.inform_player_of_payout" value = "[false]" accept = "true, false" description = "Wether to inform the player for the payout, or not" />
 		<setting name = "business.key" value = "N" description = "The key used to open the business" />
 		<setting name = "business.blip" value = "[52] " description = "The blip to show on business or leave it empty for no blip" />
-		<setting name = "business.ownedBusinesses" value = "[3] " description = "Maximum number of businesses a player can own, or leave it empty for infinite" />
-		<setting name = "business.showBusinessInfoOnMarker" value = "[true]" description = "Wether to show the business info on the marker, or not" />
+		<setting name = "business.owned_businesses" value = "[3] " description = "Maximum number of businesses a player can own, or leave it empty for infinite" />
+		<setting name = "business.show_business_info_on_marker" value = "[true]" description = "Wether to show the business info on the marker, or not" />
 	</settings>
 
 	<!-- dxgui -->

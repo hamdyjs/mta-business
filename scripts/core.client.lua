@@ -30,7 +30,7 @@ addEventHandler("onClientRender", root,
 					local width = 80 / scale;
 					dxDrawImage(screen_x - width / 2, screen_y - screen_height / 10, width, 80, "files/business.png");
 				end
-				if settings.showBusinessInfoOnMarker then
+				if settings.show_business_info_on_marker then
 					screen_x, screen_y = getScreenFromWorldPosition(x, y, z + 1.4);
 					if screen_x then
 						if #tostring(id) == 1 then id = "0"..tostring(id) end

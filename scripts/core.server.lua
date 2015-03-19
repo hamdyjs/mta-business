@@ -23,7 +23,7 @@ function dbCreateBusinessesCallback(query_handle)
 	if (sql and #sql > 0) then
 		for index, row in ipairs(sql) do
 			local pos = split(row["pos"], ",");
-			local b_marker = Marker(pos[1], pos[2], pos[3], "cylinder", 1.5, settings.markerColor[1], settings.markerColor[2], settings.markerColor[3], settings.markerColor[4]);
+			local b_marker = Marker(pos[1], pos[2], pos[3], "cylinder", 1.5, settings.marker_color[1], settings.marker_color[2], settings.marker_color[3], settings.marker_color[4]);
 			b_marker.interior = pos[4];
 			b_marker.dimension = pos[5];
 			if (settings.blip ~= false) then
@@ -54,7 +54,7 @@ addCommandHandler("business", function(player)
 end);
 
 function Player:outputMessage(message, r, g, b)
-	if (settings.infoMessagesType == "dx") then
+	if (settings.info_messages_type == "dx") then
 		dxOutputMessage(message, self, r, g, b);
 	else
 		self:outputChat(message, r, g, b, true);
@@ -62,7 +62,7 @@ function Player:outputMessage(message, r, g, b)
 end
 
 function outputMessage(message, player, r, g, b)
-	if (settings.infoMessagesType == "dx") then
+	if (settings.info_messages_type == "dx") then
 		dxOutputMessage(message, player, r, g, b);
 	else
 		player:outputChat(message, r, g, b, true);
@@ -116,7 +116,7 @@ function dbCreateBusinessCallback(query_handle, client, x, y, z, interior, dimen
 
 		database:exec("INSERT INTO business(id,name,owner,cost,pos,payout,payout_time,payout_otime,payout_unit,payout_cur_time,bank) VALUES(?,?,?,?,?,?,?,?,?,?,?)", id, name, "For Sale", cost, x..","..y..","..z..","..interior..","..dimension, payout, payout_time * unit, payout_time, payout_unit, payout_time * unit, 0);
 
-		local b_marker = Marker(x, y, z, "cylinder", 1.5, settings.markerColor[1], settings.markerColor[2], settings.markerColor[3], settings.markerColor[4]);
+		local b_marker = Marker(x, y, z, "cylinder", 1.5, settings.marker_color[1], settings.marker_color[2], settings.marker_color[3], settings.marker_color[4]);
 		b_marker.interior = interior;
 		b_marker.dimension = dimension;
 		if (settings.blip ~= false) then
@@ -153,7 +153,7 @@ function businessPayout(b_marker)
 	if (owner ~= "For Sale") then
 		bank = bank + payout;
 		database:exec("UPDATE business SET bank = ? WHERE id = ?", bank, id);
-		if (settings.informPlayerForPayout) then
+		if (settings.inform_player_of_payout) then
 			local account = Account(owner);
 			if (account) then
 				local player = account:getPlayer();
@@ -398,7 +398,7 @@ end);
 
 function dbBuyBusinessCallback(query_handle, source, b_marker, id, name, owner, cost, payout, payout_time, payout_otime, payout_unit, bank, timer)
 	local sql = query_handle:poll(0);
-	if (#sql == settings.ownedBusinesses) then
+	if (#sql == settings.owned_businesses) then
 		source:outputMessage("Business: You already own "..#sql.." businesses which is the maximum amount", 255, 0, 0);
 		return;
 	end
