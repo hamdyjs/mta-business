@@ -189,6 +189,7 @@ addEventHandler("onClientResourceStart", resourceRoot, function()
 		dxPrompt("Are you sure you want to buy this business?", function()
 			triggerServerEvent("business.server.buy", root);
 			gui.b.window.visible = false;
+			showCursor(false);
 		end);
 	end
 
@@ -197,6 +198,7 @@ addEventHandler("onClientResourceStart", resourceRoot, function()
 		dxPrompt("Are you sure you want to sell this business?", function()
 			triggerServerEvent("business.server.sell", root);
 			gui.b.window.visible = false;
+			showCursor(false);
 		end);
 	end;
 
@@ -207,7 +209,8 @@ addEventHandler("onClientResourceStart", resourceRoot, function()
 			if (not amount) then outputMessage("You must enter a correct amount", 255, 0, 0); return; end
 			triggerServerEvent("business.server.depsoit", root, amount);
 			gui.b.window.visible = false;
-		end)
+			showCursor(false);
+		end, nil, true);
 	end;
 
 	gui.b.button.withdraw.func = function(state)
@@ -217,7 +220,8 @@ addEventHandler("onClientResourceStart", resourceRoot, function()
 			if (not amount) then outputMessage("You must enter a correct amount", 255, 0, 0); return; end
 			triggerServerEvent("business.server.withdraw", root, amount);
 			gui.b.window.visible = false;
-		end);
+			showCursor(false);
+		end, nil, true);
 	end;
 
 	gui.b.button.set_name.func = function(state)
@@ -226,7 +230,8 @@ addEventHandler("onClientResourceStart", resourceRoot, function()
 			if (name == "" or name:len() < 4) then outputMessage("Name must be at least 4 characters long", 255, 0, 0); return; end
 			triggerServerEvent("business.server.setName", root, name);
 			gui.b.window.visible = false;
-		end);
+			showCursor(false);
+		end, nil, true);
 	end;
 
 	gui.b.button.set_owner.func = function(state)
@@ -235,7 +240,8 @@ addEventHandler("onClientResourceStart", resourceRoot, function()
 			if (owner == "") then outputMessage("Owner's account name must be at least 1 character long", 255, 0, 0); return; end
 			triggerServerEvent("business.server.setOwner", root, owner);
 			gui.b.window.visible = false;
-		end);
+			showCursor(false);
+		end, nil, true);
 	end;
 
 	gui.b.button.set_cost.func = function(state)
@@ -245,7 +251,8 @@ addEventHandler("onClientResourceStart", resourceRoot, function()
 			if (not amount) then outputMessage("You must enter a correct amount", 255, 0, 0); return; end
 			triggerServerEvent("business.server.setCost", root, amount);
 			gui.b.window.visible = false;
-		end);
+			showCursor(false);
+		end, nil, true);
 	end;
 
 	gui.b.button.set_bank.func = function(state)
@@ -255,7 +262,8 @@ addEventHandler("onClientResourceStart", resourceRoot, function()
 			if (not amount) then outputMessage("You must enter a correct amount", 255, 0, 0); return; end
 			triggerServerEvent("business.server.setBank", root, amount);
 			gui.b.window.visible = false;
-		end);
+			showCursor(false);
+		end, nil, true);
 	end;
 
 	gui.b.button.destroy.func = function(state)
@@ -263,6 +271,7 @@ addEventHandler("onClientResourceStart", resourceRoot, function()
 		dxPrompt("Are you sure you want to destroy the business", function()
 			triggerServerEvent("business.server.destroy", root);
 			gui.b.window.visible = false;
+			showCursor(false);
 		end);
 	end;
 end);
