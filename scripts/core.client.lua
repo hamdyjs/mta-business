@@ -30,7 +30,7 @@ addEventHandler("onClientRender", root,
 					local width = 80 / scale;
 					dxDrawImage(screen_x - width / 2, screen_y - screen_height / 10, width, 80, "files/business.png");
 				end
-				if settings["business.showBusinessInfoOnMarker"] then
+				if settings.showBusinessInfoOnMarker then
 					screen_x, screen_y = getScreenFromWorldPosition(x, y, z + 1.4);
 					if screen_x then
 						if #tostring(id) == 1 then id = "0"..tostring(id) end
@@ -74,9 +74,9 @@ addEventHandler("business.showInstructions", root,
 );
 
 function showInstructions()
-	if settings["business.key"] then
+	if settings.key then
 		dxDrawText("Press",(screen_width / 1440) * 550,(screen_height / 900) * 450,(screen_width / 1440) * 100,(screen_height / 900) * 100, tocolor(255, 255, 255, 255),(screen_width / 1440) * 2.0);
-		dxDrawText(settings["business.key"]:upper(),(screen_width / 1440) * 615,(screen_height / 900) * 450,(screen_width / 1440) * 100,(screen_height / 900) * 100, tocolor(255, 0, 0, 255),(screen_width / 1440) * 2.0);
+		dxDrawText(settings.key:upper(),(screen_width / 1440) * 615,(screen_height / 900) * 450,(screen_width / 1440) * 100,(screen_height / 900) * 100, tocolor(255, 0, 0, 255),(screen_width / 1440) * 2.0);
 		dxDrawText(" To Open The Business",(screen_width / 1440) * 630,(screen_height / 900) * 450,(screen_width / 1440) * 100,(screen_height / 900) * 100, tocolor(255, 255, 255, 255),(screen_width / 1440) * 2.0);
 	end
 end
@@ -175,7 +175,7 @@ addEventHandler("onClientResourceStart", resourceRoot,
 
 addEvent("business.getSettings", true);
 addEventHandler("business.getSettings", root,
-	function(settings2)
-		settings = settings2;
+	function(_settings)
+		settings = _settings;
 	end
 );

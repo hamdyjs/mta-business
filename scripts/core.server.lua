@@ -1,9 +1,15 @@
-local settings = get("");
-if (settings["business.key"]:len() < 1 or settings["business.key"]:len() > 1) then
-	settings["business.key"] = "N";
+local _settings = get("");
+local settings = {};
+for k, v in pairs(_settings) do
+	k = split(k, ".")[2];
+	settings[k] = v;
 end
-if (not settings["business.blip"] or tonumber(settings["business.blip"]) == nil) then
-	settings["business.blip"] = false;
+
+if (settings.key:len() < 1 or settings.key:len() > 1) then
+	settings.key = "N";
+end
+if (not settings.blip or tonumber(settings.blip) == nil) then
+	settings.blip = false;
 end
 
 addEventHandler("onResourceStart", resourceRoot, function()
@@ -17,16 +23,16 @@ function dbCreateBusinessesCallback(query_handle)
 	if (sql and #sql > 0) then
 		for index, row in ipairs(sql) do
 			local pos = split(row["pos"], ",");
-			local b_marker = Marker(pos[1], pos[2], pos[3], "cylinder", 1.5, settings["business.markerColor"][1], settings["business.markerColor"][2], settings["business.markerColor"][3], settings["business.markerColor"][4]);
+			local b_marker = Marker(pos[1], pos[2], pos[3], "cylinder", 1.5, settings.markerColor[1], settings.markerColor[2], settings.markerColor[3], settings.markerColor[4]);
 			b_marker.interior = pos[4];
 			b_marker.dimension = pos[5];
-			if (settings["business.blip"] ~= false) then
+			if (settings.blip ~= false) then
 				if (row["owner"] == "For Sale") then
-					local b_blip = Blip.createAttachedTo(b_marker, settings["business.blip"], 2, 255, 0, 0, 255, 0, 100.0);
+					local b_blip = Blip.createAttachedTo(b_marker, settings.blip, 2, 255, 0, 0, 255, 0, 100.0);
 					b_blip.interior = pos[4];
 					b_blip.dimension = pos[5];
 				else
-					local b_blip = Blip.createAttachedTo(b_marker, settings["business.blip"], 2, 255, 0, 0, 255, 0, 100.0);
+					local b_blip = Blip.createAttachedTo(b_marker, settings.blip, 2, 255, 0, 0, 255, 0, 100.0);
 					b_blip.interior = pos[4];
 					b_blip.dimension = pos[5];
 				end
@@ -48,7 +54,7 @@ addCommandHandler("business", function(player)
 end);
 
 function Player:outputMessage(message, r, g, b)
-	if (settings["business.infoMessagesType"] == "dx") then
+	if (settings.infoMessagesType == "dx") then
 		dxOutputMessage(message, self, r, g, b);
 	else
 		self:outputChat(message, r, g, b, true);
@@ -56,7 +62,7 @@ function Player:outputMessage(message, r, g, b)
 end
 
 function outputMessage(message, player, r, g, b)
-	if (settings["business.infoMessagesType"] == "dx") then
+	if (settings.infoMessagesType == "dx") then
 		dxOutputMessage(message, player, r, g, b);
 	else
 		player:outputChat(message, r, g, b, true);
@@ -110,11 +116,11 @@ function dbCreateBusinessCallback(query_handle, client, x, y, z, interior, dimen
 
 		database:exec("INSERT INTO business(id,name,owner,cost,pos,payout,payout_time,payout_otime,payout_unit,payout_cur_time,bank) VALUES(?,?,?,?,?,?,?,?,?,?,?)", id, name, "For Sale", cost, x..","..y..","..z..","..interior..","..dimension, payout, payout_time * unit, payout_time, payout_unit, payout_time * unit, 0);
 
-		local b_marker = Marker(x, y, z, "cylinder", 1.5, settings["business.markerColor"][1], settings["business.markerColor"][2], settings["business.markerColor"][3], settings["business.markerColor"][4]);
+		local b_marker = Marker(x, y, z, "cylinder", 1.5, settings.markerColor[1], settings.markerColor[2], settings.markerColor[3], settings.markerColor[4]);
 		b_marker.interior = interior;
 		b_marker.dimension = dimension;
-		if (settings["business.blip"] ~= false) then
-			local b_blip = Blip.createAttachedTo(b_marker, settings["business.blip"], 2, 255, 0, 0, 255, 0, 100.0);
+		if (settings.blip ~= false) then
+			local b_blip = Blip.createAttachedTo(b_marker, settings.blip, 2, 255, 0, 0, 255, 0, 100.0);
 			b_blip.interior = interior;
 			b_blip.dimension = dimension;
 		end
@@ -147,7 +153,7 @@ function businessPayout(b_marker)
 	if (owner ~= "For Sale") then
 		bank = bank + payout;
 		database:exec("UPDATE business SET bank = ? WHERE id = ?", bank, id);
-		if (settings["business.informPlayerForPayout"]) then
+		if (settings.informPlayerForPayout) then
 			local account = Account(owner);
 			if (account) then
 				local player = account:getPlayer();
@@ -183,12 +189,12 @@ end
 
 addEventHandler("onResourceStart", resourceRoot, function()
 	for index, player in ipairs(Element.getAllByType("player")) do
-		bindKey(player, settings["business.key"], "up", onPlayerAttemptToOpenBusiness);
+		bindKey(player, settings.key, "up", onPlayerAttemptToOpenBusiness);
 	end
 end);
 
 addEventHandler("onPlayerJoin", root,function()
-	bindKey(source, settings["business.key"], "up", onPlayerAttemptToOpenBusiness);
+	bindKey(source, settings.key, "up", onPlayerAttemptToOpenBusiness);
 end);
 
 function onPlayerAttemptToOpenBusiness(player)
@@ -392,7 +398,7 @@ end);
 
 function dbBuyBusinessCallback(query_handle, source, b_marker, id, name, owner, cost, payout, payout_time, payout_otime, payout_unit, bank, timer)
 	local sql = query_handle:poll(0);
-	if (#sql == settings["business.ownedBusinesses"]) then
+	if (#sql == settings.ownedBusinesses) then
 		source:outputMessage("Business: You already own "..#sql.." businesses which is the maximum amount", 255, 0, 0);
 		return;
 	end
@@ -436,3 +442,9 @@ addEvent("business.getSettings", true);
 addEventHandler("business.getSettings", root, function()
 	triggerClientEvent(source, "business.getSettings", source, settings);
 end);
+
+--TODO: remove
+function debug(...)
+	for i, v in ipairs(arg) do arg[i] = tostring(v); end
+    outputDebugString(table.concat(arg, "  "));
+end
