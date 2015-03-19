@@ -452,9 +452,3 @@ addEvent("business.getSettings", true);
 addEventHandler("business.getSettings", root, function()
 	triggerClientEvent(source, "business.getSettings", source, settings);
 end);
-
---TODO: remove
-function debug(...)
-	for i, v in ipairs(arg) do arg[i] = tostring(v); end
-    outputDebugString(table.concat(arg, "  "));
-end
