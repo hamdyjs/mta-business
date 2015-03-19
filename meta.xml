@@ -1,23 +1,56 @@
 <meta>
 	<info author = "JR10" name = "Business System" version = "1.2" type = "script" />
-	
-	<script src = "server/main.lua" type = "server" />
-	<script src = "server/updatecheck.lua" type = "server" />
-	<script src = "client/main.lua" type = "client" />
-	<script src = "client/dxoutput.lua" type = "client" />
-	
-	<file src = "files/images/business.png" />
-	<file src = "files/images/tick.png" />
-	<file src = "files/images/wrong.png" />
-	<file src = "files/sounds/cash.mp3" />
-	
+
+	<script src = "scripts/core.server.lua" type = "server" />
+	<script src = "scripts/updatecheck.server.lua" type = "server" />
+	<script src = "scripts/ui.client.lua" type = "client" />
+	<script src = "scripts/core.client.lua" type = "client" />
+	<script src = "scripts/dxoutput.client.lua" type = "client" />
+
+	<file src = "files/business.png" />
+	<file src = "files/tick.png" />
+	<file src = "files/wrong.png" />
+	<file src = "files/cash.mp3" />
+
+	<oop>true</oop>
+
 	<settings>
-		<setting name = "business.infoMessagesType" value = "dx" accept = "dx, chatbox" description = "The type if info messages (dx - dxDrawText is used to output info messages) (chatbox - outputChatBox is used)" />
-		<setting name = "business.markerColor" value = "[[0, 153, 0, 255]]" accept = "RGBA Color Format" description = "The color of the business marker RGBA Format" />
-		<setting name = "business.informPlayerForPayout" value = "[false]" accept = "true , false" description = "Wether to inform the player for the payout, or not" />
+		<setting name = "business.database" value = "sqlite" accept = "sqlite, mysql" description = "Whether to use SQLite or MySQL"/>
+		<setting name = "business.database_data" value = "[['localhost', 'database_name', 'username', 'password']]" accept = "host, database, username, password, port, unix_socket" description = "The data for the MySQL database connection. It must be in the same order as the 'accept' states. Port and socket are optional"/>
+		<setting name = "business.info_messages_type" value = "dx" accept = "dx, chatbox" description = "The type of info messages (dx - dxDrawText is used to output info messages) (chatbox - outputChatBox is used)" />
+		<setting name = "business.marker_color" value = "[[0, 153, 0, 255]]" accept = "RGBA Color Format" description = "The color of the business marker RGBA Format" />
+		<setting name = "business.inform_player_of_payout" value = "[false]" accept = "true, false" description = "Wether to inform the player for the payout, or not" />
 		<setting name = "business.key" value = "N" description = "The key used to open the business" />
-		<setting name = "business.blip" value = "[52] " description = "The blip to show on business or leave it empty for no blip." />
-		<setting name = "business.ownedBusinesses" value = "[3] " description = "Maximum number of businesses a player can own, or leave it empty for infinate." />
-		<setting name = "business.showBusinessInfoOnMarker" value = "[true]" description = "Wether to show the business info on the marker, or not." />
+		<setting name = "business.blip" value = "[52] " description = "The blip to show on business or leave it empty for no blip" />
+		<setting name = "business.owned_businesses" value = "[3] " description = "Maximum number of businesses a player can own, or leave it empty for infinite" />
+		<setting name = "business.show_business_info_on_marker" value = "[true]" description = "Wether to show the business info on the marker, or not" />
 	</settings>
+
+	<!-- dxgui -->
+		<script src="dxgui/dxgui/shared/middleclass.lua" type="client" />
+		<!-- <script src="dxgui/dxgui/shared/classlib.lua" type="client" /> -->
+		<script src="dxgui/dxgui/shared/util.lua" type="client" />
+		<script src="dxgui/dxgui/shared/Cursor.lua" type="client" />
+
+		<script src="dxgui/dxgui/dx_library.lua" type="client" />
+		<script src="dxgui/dxgui/elements/dx_movable.lua" type="client" />
+		<script src="dxgui/dxgui/elements/dx_button.lua" type="client" />
+		<script src="dxgui/dxgui/elements/dx_checkbox.lua" type="client" />
+		<script src="dxgui/dxgui/elements/dx_combobox.lua" type="client" />
+		<script src="dxgui/dxgui/elements/dx_editfield.lua" type="client" />
+		<script src="dxgui/dxgui/elements/dx_font.lua" type="client" />
+		<script src="dxgui/dxgui/elements/dx_gridlist.lua" type="client" />
+		<script src="dxgui/dxgui/elements/dx_image.lua" type="client" />
+		<script src="dxgui/dxgui/elements/dx_memo.lua" type="client" />
+		<script src="dxgui/dxgui/elements/dx_progressbar.lua" type="client" />
+		<script src="dxgui/dxgui/elements/dx_radiobutton.lua" type="client" />
+		<script src="dxgui/dxgui/elements/dx_scrollbar.lua" type="client" />
+		<script src="dxgui/dxgui/elements/dx_scrollpane.lua" type="client" />
+		<script src="dxgui/dxgui/elements/dx_tab.lua" type="client" />
+		<script src="dxgui/dxgui/elements/dx_tabpanel.lua" type="client" />
+		<script src="dxgui/dxgui/elements/dx_text.lua" type="client" />
+		<script src="dxgui/dxgui/elements/dx_treeview.lua" type="client" />
+		<script src="dxgui/dxgui/elements/dx_treeviewitem.lua" type="client" />
+		<script src="dxgui/dxgui/elements/dx_window.lua" type="client" />
+	<!-- -->
 </meta>
