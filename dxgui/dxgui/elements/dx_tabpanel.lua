@@ -28,9 +28,9 @@ function dxTabPanel:create(x, y, width, height, parent)
 end
 dxTabPanel.new = dxTabPanel.create;
 
-function dxTabPanel:destroy()
+function dxTabPanel:destroy(do_not_remove)
 	for index, tab in pairs(self.tabs) do self.tab:destroy() end
-	dxGUI.destroy(self);
+	dxGUI.destroy(self, do_not_remove);
 end
 
 function dxTabPanel:addTab(title)

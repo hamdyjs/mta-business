@@ -53,8 +53,8 @@ function dxWindow:destroy ( )
 		self.m:destroyElement()
 	end
 	if table.getn(self.children) > 0 then
-		for i, v in ipairs(self.children) do
-			v:destroy()
+		for i, v in pairs(self.children) do
+            v:destroy(true);
 		end
 	end
 	

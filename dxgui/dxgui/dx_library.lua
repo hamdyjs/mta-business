@@ -7,12 +7,14 @@ dxObjects = {}
 
 dxGUI = class ( 'dxGUI' )
 
-function dxGUI:destroy ( )
+function dxGUI:destroy ( do_not_remove )
     local parent = self.parent
-    if parent then
-        local idx = table.find(parent.children, self)
-        if idx then
-            table.remove(parent.children, idx)
+    if (not do_not_remove) then
+        if parent then
+            local idx = table.find(parent.children, self)
+            if idx then
+                table.remove(parent.children, idx)
+            end
         end
     end
     
@@ -180,10 +182,8 @@ end
 function dxPrompt(message, ycallback, ncallback, include_edit)
     if not (message and type(ycallback) == "function") then return; end
     local screen_width, screen_height = GuiElement.getScreenSize();
-    showCursor(true)
-    local width, height = 300, 200
+    local width, height = 300, 200;
     local button_y = 160;
-    local edit;
     local x, y = (screen_width - width) / 2, (screen_height - height) / 2;
     local window = dxWindow(x, y, width, height, "Confirmation");
     local label = dxText(10, 20, 280, 115, message, window);
@@ -198,15 +198,13 @@ function dxPrompt(message, ycallback, ncallback, include_edit)
         n:setColor(125, 0, 0);
     y.func = function(state)
         if (state ~= "up") then return; end
-        showCursor(false);
+        ycallback(include_edit and edit.text or nil);
         window:destroy();
-        return ycallback(include_edit and edit.text or nil);
     end
     n.func = function(state)
         if (state ~= "up") then return; end
-        showCursor(false);
+        if (ncallback) then ncallback(); end
         window:destroy();
-        return ncallback and ncallback() or nil;
     end
     return window;
 end
@@ -231,7 +229,7 @@ function onClick(...)
             local visible = v.visible;
             if (v.parent) then
                 if (v.parent.type == "window") then visible = v.parent.visible and v.visible;
-                elseif (v.parent.type == "tab") then visible = v.parent.panel.selected == v.parent.id and v.visible; end
+                elseif (v.parent.type == "tab") then visible = v.parent.panel.selected == v.parent.id and v.parent.panel.parent.visible and v.visible; end
             end
             if (visible) then
                 if v.type == "button" then

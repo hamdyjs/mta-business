@@ -19,7 +19,10 @@ end
 function table.copy(tab, recursive)
     local ret = {}
     for key, value in pairs(tab) do
-        if (type(value) == "table") and recursive then ret[key] = table.copy(value)
+        if (type(value) == "table") and recursive then
+        	ret[key] = table.copy(value)
+        	local mt = getmetatable(value);
+        	if (mt) then setmetatable(ret[key], mt); end
         else ret[key] = value end
     end
     return ret

@@ -44,8 +44,8 @@ function dxEditField:create ( x, y, width, height, text, parent )
 
     --TODO: This needs a rewrite, stop using GuiEdit and actually code a dx one from scratch
     if (parent) then
-        self.parent = parent;
         self.render = false;
+        self.parent = parent;
         table.insert(parent.children, self);
         self.edit:setPosition(parent.x + x, parent.y + y, false);
         if (parent.type == "tab") then self.edit.visible = parent.panel.parent.visible;
@@ -58,6 +58,11 @@ function dxEditField:create ( x, y, width, height, text, parent )
     return self
 end
 dxEditField.new = dxEditField.create;
+
+function dxEditField:destroy(do_not_remove)
+    self.edit:destroy();
+    dxGUI.destroy(self, do_not_remove);
+end
 
 -- function dxEditField:getMax ( )
 --     return self.maxLength

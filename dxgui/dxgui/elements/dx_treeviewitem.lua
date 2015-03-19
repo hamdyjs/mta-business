@@ -17,11 +17,11 @@ function dxTreeViewItem:create(text, parent)
 end
 dxTreeViewItem.new = dxTreeViewItem.create;
 
-function dxTreeViewItem:destroy()
+function dxTreeViewItem:destroy(do_not_remove)
 	for index, item in pairs(self.items) do
-		item:destroy();
+		item:destroy(do_not_remove);
 	end
-	dxGUI.destroy(self);
+	dxGUI.destroy(self, do_not_remove);
 end
 
 function dxTreeViewItem:addItem(text)
