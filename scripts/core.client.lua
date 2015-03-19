@@ -210,21 +210,3 @@ addEventHandler("onClientCallSettings", root,
 		settings = settings2;
 	end
 );
-
-_showCursor = showCursor;
-function showCursor(bool)
-	if bool then
-		_showCursor(true);
-	else
-		_showCursor(false);
-		Timer(
-			function()
-				for index, window in ipairs(Element.getAllByType("gui-window", resourceRoot)) do
-					if window.visible then
-						_showCursor(true);
-					end
-				end
-			end
-		, 300, 1);
-	end
-end
