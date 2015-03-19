@@ -74,10 +74,10 @@ end);
 
 addEvent("business.server.createBusiness", true);
 addEventHandler("business.server.createBusiness", root, function(posX, posY, posZ, interior, dimension, name, cost, payout, payoutTime, payoutUnit)
-	database:query(dbCreateBusinessCallback,  {posX, posY, posZ, interior, dimension, name, cost, payout, payoutTime, payoutUnit}, "SELECT * FROM business");
+	database:query(dbCreateBusinessCallback,  {client, posX, posY, posZ, interior, dimension, name, cost, payout, payoutTime, payoutUnit}, "SELECT * FROM business");
 end);
 
-function dbCreateBusinessCallback(query_handle, posX, posY, posZ, interior, dimension, name, cost, payout, payoutTime, payoutUnit)
+function dbCreateBusinessCallback(query_handle, client, posX, posY, posZ, interior, dimension, name, cost, payout, payoutTime, payoutUnit)
 	local sql = query_handle:poll(0);
 	if (sql) then
 		local id;
