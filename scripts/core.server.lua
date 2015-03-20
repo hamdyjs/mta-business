@@ -1,8 +1,10 @@
 local _settings = get("");
 local settings = {};
-for k, v in pairs(_settings) do
-	k = split(k, ".")[2];
-	settings[k] = v;
+if _settings then
+	for k, v in pairs(_settings) do
+		k = split(k, ".")[2];
+		settings[k] = v;
+	end
 end
 
 if (settings.key:len() < 1 or settings.key:len() > 1) then
