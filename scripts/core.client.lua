@@ -31,34 +31,17 @@ addEventHandler("onClientRender", root,
 					dxDrawImage(screen_x - width / 2, screen_y - screen_height / 10, width, 80, "files/business.png");
 				end
 				if settings.show_business_info_on_marker then
-					screen_x, screen_y = getScreenFromWorldPosition(x, y, z + 1.4);
-					if screen_x then
-						if #tostring(id) == 1 then id = "0"..tostring(id) end
-						dxDrawFramedText("ID: #"..id, screen_x, screen_y, screen_x, screen_y, tocolor(255, 255, 255, 255), 1.0, "default-bold", "center", "center", false, false, false);
-					end
-					screen_x, screen_y = getScreenFromWorldPosition(x, y, z + 1.2);
-					if screen_x then
-						dxDrawFramedText("Name: "..name, screen_x, screen_y, screen_x, screen_y, tocolor(255, 255, 255, 255), 1.0, "default-bold", "center", "center", false, false, false);
-					end
-					screen_x, screen_y = getScreenFromWorldPosition(x, y, z + 1.0);
-					if screen_x then
-						dxDrawFramedText("Owner: "..owner, screen_x, screen_y, screen_x, screen_y, tocolor(255, 255, 255, 255), 1.0, "default-bold", "center", "center", false, false, false);
-					end
-					screen_x, screen_y = getScreenFromWorldPosition(x, y, z + 0.8);
-					if screen_x then
-						dxDrawFramedText("Cost: $"..cost, screen_x, screen_y, screen_x, screen_y, tocolor(255, 255, 255, 255), 1.0, "default-bold", "center", "center", false, false, false);
-					end
-					screen_x, screen_y = getScreenFromWorldPosition(x, y, z + 0.6);
-					if screen_x then
-						dxDrawFramedText("Payout: $"..payout, screen_x, screen_y, screen_x, screen_y, tocolor(255, 255, 255, 255), 1.0, "default-bold", "center", "center", false, false, false);
-					end
-					screen_x, screen_y = getScreenFromWorldPosition(x, y, z + 0.4);
-					if screen_x then
-						dxDrawFramedText("Payout Time: "..payout_otime.." "..payout_unit, screen_x, screen_y, screen_x, screen_y, tocolor(255, 255, 255, 255), 1.0, "default-bold", "center", "center", false, false, false);
-					end
+					local output_str = ""
 					screen_x, screen_y = getScreenFromWorldPosition(x, y, z + 0.2);
 					if screen_x then
-						dxDrawFramedText("Bank: $"..bank, screen_x, screen_y, screen_x, screen_y, tocolor(255, 255, 255, 255), 1.0, "default-bold", "center", "center", false, false, false);
+						output_str = output_str.."ID: #"..id.."\n\n"
+						output_str = output_str.."Name: "..name.."\n\n"
+						output_str = output_str.."Owner: "..owner.."\n\n"
+						output_str = output_str.."Cost: $"..convertNumber(cost).."\n\n"
+						output_str = output_str.."Payout: $"..convertNumber(payout).."\n\n"
+						output_str = output_str.."Payout Time: "..payoutOTime.." "..payoutUnit.."\n\n"
+						output_str = output_str.."Bank: $"..convertNumber(bank).."\n\n"
+						dxDrawFramedText(output_str, screen_x, screen_y, screen_x, screen_y, tocolor(255, 255, 255, 255), 1.0, "default-bold", "center", "center", false, false, false);
 					end
 				end
 			end
