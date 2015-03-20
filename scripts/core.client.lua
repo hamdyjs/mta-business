@@ -32,14 +32,14 @@ addEventHandler("onClientRender", root,
 				end
 				if settings.show_business_info_on_marker then
 					local output_str = ""
-					screen_x, screen_y = getScreenFromWorldPosition(x, y, z + 0.2);
+					screen_x, screen_y = getScreenFromWorldPosition(x, y, z + 0.5);
 					if screen_x then
 						output_str = output_str.."ID: #"..id.."\n\n"
 						output_str = output_str.."Name: "..name.."\n\n"
 						output_str = output_str.."Owner: "..owner.."\n\n"
 						output_str = output_str.."Cost: $"..convertNumber(cost).."\n\n"
 						output_str = output_str.."Payout: $"..convertNumber(payout).."\n\n"
-						output_str = output_str.."Payout Time: "..payoutOTime.." "..payoutUnit.."\n\n"
+						output_str = output_str.."Payout Time: "..payout_otime.." "..payout_unit.."\n\n"
 						output_str = output_str.."Bank: $"..convertNumber(bank).."\n\n"
 						dxDrawFramedText(output_str, screen_x, screen_y, screen_x, screen_y, tocolor(255, 255, 255, 255), 1.0, "default-bold", "center", "center", false, false, false);
 					end
@@ -48,6 +48,17 @@ addEventHandler("onClientRender", root,
 		end
 	end
 );
+
+function convertNumber ( number )  
+	local formatted = number  
+	while true do      
+		formatted, k = string.gsub(formatted, "^(-?%d+)(%d%d%d)", '%1,%2')    
+		if ( k==0 ) then      
+			break   
+		end  
+	end  
+	return formatted
+end
 
 addEvent("business.showInstructions", true);
 addEventHandler("business.showInstructions", root,
