@@ -32,7 +32,7 @@ addEventHandler("onClientRender", root,
 				end
 				if settings.show_business_info_on_marker then
 					local output_str = ""
-					screen_x, screen_y = getScreenFromWorldPosition(x, y, z + 0.5);
+					screen_x, screen_y = getScreenFromWorldPosition(x, y, z + 0.7);
 					if screen_x then
 						output_str = output_str.."ID: #"..id.."\n\n"
 						output_str = output_str.."Name: "..name.."\n\n"
