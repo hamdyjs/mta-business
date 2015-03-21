@@ -1,4 +1,4 @@
-###Business System v1.2 for MTA:SA###
+###Business System v1.3 for MTA:SA###
 
 [Resource's forum topic](http://forum.mtasa.com/viewtopic.php?f=108&t=35797)
 
