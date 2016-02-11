@@ -229,15 +229,12 @@ end
 addEvent("business.buy", true);
 addEventHandler("business.buy", root, function()
 	local account = client.account;
-	if (not account or account:isGuest()) then return; end
+	if (not account or account:isGuest()) then client:outputMessage("Business: You are not logged in", 255, 0, 0) return; end
 	local b_marker = client:getMarker();
 	if (not isElement(b_marker)) then return; end
 	local b_data = b_marker:getData("b_data");
 	local id, name, owner, cost, payout, payout_time, payout_otime, payout_unit, bank, timer = unpack(b_data);
-	if (owner ~= "For Sale") then
-		client:outputMessage("Business: This business is owned", 255, 0, 0);
-		return;
-	end
+	if (owner ~= "For Sale") then client:outputMessage("Business: This business is owned", 255, 0, 0); return; end
 	database:query(dbBuyBusinessCallback, {client, b_marker, id, name, owner, cost, payout, payout_time, payout_otime, payout_unit, bank, timer}, "SELECT * FROM business WHERE owner = ?", account.name);
 end);
 
